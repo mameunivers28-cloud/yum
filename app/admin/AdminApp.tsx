@@ -17,7 +17,7 @@ type PApp = { id: string; status: string; full_name: string; phone: string; what
 type PAdm = { notes: string | null; commission_pct: number | null; final_daily_price: number | null };
 const DOCLABEL: Record<string, string> = { photo_ext: "Photo extérieure", photo_int: "Photo intérieure", photo_dash: "Tableau de bord", doc_vehicle: "Document véhicule", id: "Identité", ownership: "Propriété / autorisation" };
 
-type Block = { id: string; vehicle_id: string; start_date: string; end_date: string; kind: string };
+type Block = { rental_id?: string | null; id: string; vehicle_id: string; start_date: string; end_date: string; kind: string };
 const fmtDate = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
 const fmtTime = (d: string) => new Date(d).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const wa = (p: string) => "https://wa.me/" + p.replace(/\D/g, "");
@@ -27,6 +27,12 @@ const KINDS = ["Loyer", "Dépôt de garantie", "Frais de livraison"];
 const DOCST = ["Non vérifié", "Documents reçus", "Vérifié", "Refusé"];
 type Pay = { id: string; rental_id: string; kind: string; amount: number; status: string; note: string | null };
 type RAdm = { rental_id: string; final_total: number | null; delivery_fee: number | null; yum_commission: number | null; owner_share: number | null; client_docs_status: string; notes: string | null };
+const dbMsg = (m: string) =>
+  m.includes("PAYMENT_NOT_VALIDATED") ? "Confirmation impossible : aucun paiement de loyer n’est validé pour cette demande."
+  : m.includes("DATES_CONFLICT") ? "Confirmation impossible : ces dates chevauchent une réservation confirmée ou une période bloquée."
+  : m.includes("NO_VEHICLE") ? "Confirmation impossible : cette demande n’est liée à aucun véhicule."
+  : m.includes("BAD_DATES") ? "Confirmation impossible : les dates sont incohérentes."
+  : "";
 const NOPE = "Modification non enregistrée : ce compte n’a pas les droits d’administration (ou la ligne n’existe plus). Connectez-vous avec le compte administrateur.";
 
 function FinPanel({ r, open, toggle, adm, pays, onSave, onAdd, onStatus }: { r: { id: string }; open: boolean; toggle: () => void; adm?: RAdm; pays: Pay[]; onSave: (id: string, f: FormData) => void; onAdd: (id: string, f: FormData) => void; onStatus: (p: Pay, s: string) => void }) {
@@ -137,10 +143,11 @@ export default function AdminApp() {
 
   async function setStatus(table: "rental_requests" | "special_requests", id: string, status: string) {
     const { data, error } = await supabase.from(table).update({ status }).eq("id", id).select("id");
-    if (error) { setMsg("Changement impossible."); return; }
+    if (error) { setMsg(dbMsg(error.message) || "Changement impossible."); return; }
     if (!data || data.length === 0) { setMsg(NOPE); return; }
     setMsg("");
     refreshHist();
+    supabase.from("vehicle_availability").select("*").order("start_date").then((b) => { if (!b.error) setBlocks((b.data ?? []) as Block[]); });
     if (table === "rental_requests") setRentals((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
     else setSpecials((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
   }
@@ -437,7 +444,7 @@ export default function AdminApp() {
               <div className="adm-detail" style={{ gridColumn: "1 / -1" }}>
                 <p><b>Disponibilités</b> <small>(une demande ne bloque rien ; seule une réservation confirmée ou un blocage protège les dates)</small></p>
                 {blocks.filter((b) => b.vehicle_id === v.id).map((b) => (
-                  <p key={b.id}>{b.kind} · du {fmtDate(b.start_date)} au {fmtDate(b.end_date)} <button className="linkbtn" onClick={() => delBlock(b)}>Supprimer</button></p>
+                  <p key={b.id}>{b.kind} · du {fmtDate(b.start_date)} au {fmtDate(b.end_date)} {b.rental_id ? <small>(liée à une réservation confirmée)</small> : <button className="linkbtn" onClick={() => delBlock(b)}>Supprimer</button>}</p>
                 ))}
                 <form className="fgrid3" onSubmit={(e) => { e.preventDefault(); const form = e.currentTarget; addBlock(v, new FormData(form)); form.reset(); }}>
                   <label>Du<input name="start" type="date" required /></label>
