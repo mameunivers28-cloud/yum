@@ -82,3 +82,21 @@ footer.site a{display:block;opacity:.85;text-decoration:none;margin-top:4px}foot
 .est{margin:0;background:var(--soft);border-radius:10px;padding:10px 14px}
 .err{margin:0;color:#b3261e;font-weight:600}
 .formcard .btn:disabled{opacity:.6;cursor:wait}
+
+/* ---- Administration ---- */
+.adm-login{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--soft)}
+.adm-login .formcard{width:100%;max-width:400px}
+.adm{max-width:900px;margin:0 auto;padding:16px 16px 60px}
+.adm-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 16px}
+.adm-who{flex:1;opacity:.7;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.adm-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:18px}
+.adm-sum div{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:14px}
+.adm-sum b{display:block;font:800 28px var(--font-display),sans-serif;color:var(--indigo)}
+.adm-filter{display:grid;gap:4px;font-size:14px;font-weight:600;margin:16px 0 4px;max-width:280px}
+.adm select{font:400 16px var(--font-body),sans-serif;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);height:44px;width:100%;max-width:100%}
+.adm-list{display:grid;gap:12px;margin-top:14px}
+.adm-card{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:6px;background:var(--card);min-width:0}
+.adm-card p{margin:0;overflow-wrap:anywhere}
+.adm-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.adm-head small{opacity:.7}
+.adm-note{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:15px}
+.adm-veh{grid-template-columns:1fr auto;align-items:center}

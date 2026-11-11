@@ -49,7 +49,7 @@ export default function DemandeForm({ vehicleId, vehicleName, dailyPrice }: { ve
       <h2>Faire une demande</h2>
       <p className="sub" style={{ marginBottom: 14 }}>Aucun paiement maintenant. Nous confirmons la disponibilité avant tout.</p>
       <div className="fgrid">
-        <label>Dates de départ<input type="date" required min={minDate} value={f.start_date} onChange={set("start_date")} /></label>
+        <label>Date de départ<input type="date" required min={minDate} value={f.start_date} onChange={set("start_date")} /></label>
         <label>Date de retour<input type="date" required min={f.start_date || minDate} value={f.end_date} onChange={set("end_date")} /></label>
       </div>
       {days > 0 && <p className="est">{days} jour{days > 1 ? "s" : ""} × {fmt(dailyPrice)} FCFA = <b>{fmt(days * dailyPrice)} FCFA</b> <small>(estimation, à confirmer)</small></p>}
