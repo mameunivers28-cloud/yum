@@ -382,10 +382,10 @@ footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:t
 }
 
 /* ===== Refonte 7 : direction artistique ===== */
-.hero2{background:linear-gradient(160deg,var(--night),var(--navy) 70%,#143a8f)}
-.hero2-in{display:grid;gap:52px;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:center;padding-top:88px;padding-bottom:80px}
+.hero2{background:linear-gradient(90deg,rgba(11,31,85,.93) 0%,rgba(11,31,85,.8) 45%,rgba(11,31,85,.5) 100%),var(--hero) center/cover,var(--night)}
+.hero2-in{display:grid;gap:0;grid-template-columns:minmax(0,1fr);align-items:center;padding-top:88px;padding-bottom:80px}
 .hero2 h1{font-size:clamp(34px,4.4vw,58px);max-width:13em;line-height:1.05}
-.hero2 .lead{max-width:36em}
+.hero2 .lead{max-width:36em}.hero2 .paths{max-width:760px}
 .paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px}
 .path{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);text-decoration:none;color:#fff;transition:transform .25s,background .25s,border-color .25s}
 .path.primary{background:rgba(255,255,255,.13);border-color:rgba(157,189,255,.65)}
@@ -396,7 +396,7 @@ footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:t
 .h2-perso{margin:20px 0 0;font-size:15px;color:#dbe3ee;max-width:42em;line-height:1.5}.h2-perso b{color:#fff}
 .h2-perso a{color:var(--acc);font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .h2-geo{margin:14px 0 0;font-size:13.5px;color:#b9c6dc}
-.h2-visual{position:relative;min-height:540px;border-radius:26px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.h2-visual{display:none;position:relative;min-height:540px;border-radius:26px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.35)}
 .h2-visual{background:linear-gradient(160deg,#16337f,#0B1F55)}.h2-car{position:absolute;left:50%;top:32%;width:62%;transform:translateX(-50%);color:#9DBDFF;opacity:.35}
 .h2-photo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,85,.1),rgba(11,31,85,.7)),var(--hero) center/cover}
 .h2-sources{position:absolute;left:18px;right:18px;bottom:18px;list-style:none;margin:0;padding:0;display:grid;gap:8px}
