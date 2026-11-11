@@ -2,7 +2,10 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../../lib/supabase";
 
-const STATUTS = ["Demande reçue", "En vérification", "Approuvée", "Refusée", "Payée", "Terminée"];
+const RSTAT = ["Nouvelle demande", "En cours de traitement", "Vérification de disponibilité", "Disponibilité confirmée", "Dossier client à compléter", "Proposition commerciale envoyée", "En attente de paiement", "Paiement à vérifier", "Réservation confirmée", "Location en cours", "Location terminée", "Annulée", "Refusée"];
+const SSTAT = ["Nouvelle demande", "Recherche en cours", "Véhicule identifié", "Proposition envoyée", "En attente de réponse", "Convertie en réservation", "Clôturée", "Impossible à satisfaire"];
+type Hist = { id: string; created_at: string; admin_email: string | null; entity: string; entity_id: string | null; detail: string };
+const ENT: Record<string, string> = { rental_requests: "Location", special_requests: "Demande spéciale", partner_applications: "Partenaire", vehicles: "Véhicule" };
 
 type Rental = { id: string; vehicle_id: string | null; full_name: string; phone: string; email: string; start_date: string; end_date: string; pickup_place: string; return_place: string | null; notes: string | null; status: string; created_at: string };
 type Special = { id: string; full_name: string; phone: string; email: string; city: string | null; start_date: string; end_date: string; vehicle_type: string | null; make: string | null; model: string | null; daily_budget: number | null; transmission: string | null; seats: number | null; preferences: string | null; pickup_place: string | null; return_place: string | null; notes: string | null; status: string; created_at: string };
@@ -24,10 +27,12 @@ const NOPE = "Modification non enregistrée : ce compte n’a pas les droits d�
 export default function AdminApp() {
   const [ready, setReady] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
-  const [tab, setTab] = useState<"loc" | "spe" | "veh" | "par">("loc");
+  const [tab, setTab] = useState<"dash" | "loc" | "run" | "spe" | "veh" | "par" | "his">("dash");
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [specials, setSpecials] = useState<Special[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [hist, setHist] = useState<Hist[]>([]);
+  const [today, setToday] = useState("");
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [apps, setApps] = useState<PApp[]>([]);
   const [padm, setPadm] = useState<Record<string, PAdm>>({});
@@ -51,6 +56,8 @@ export default function AdminApp() {
     if (r.error || s.error || v.error) { setMsg("Accès refusé : ce compte n’est pas administrateur."); return; }
     const adm = await supabase.rpc("is_admin");
     if (adm.data !== true) { setMsg("Ce compte n’est pas administrateur : vous ne pouvez rien modifier. Déconnectez-vous et utilisez le compte administrateur."); }
+    const hs = await supabase.from("admin_history").select("*").order("created_at", { ascending: false }).limit(100);
+    if (!hs.error) setHist((hs.data ?? []) as Hist[]);
     const bl = await supabase.from("vehicle_availability").select("*").order("start_date");
     if (!bl.error) setBlocks((bl.data ?? []) as Block[]);
     const [pa, pm] = await Promise.all([
@@ -63,6 +70,7 @@ export default function AdminApp() {
   }, []);
 
   useEffect(() => { if (email) load(); }, [email, load]);
+  useEffect(() => { const t = new Date(); setToday(`${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`); }, []);
 
   async function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -164,9 +172,15 @@ export default function AdminApp() {
   }
 
   const vName = (id: string | null) => vehicles.find((v) => v.id === id)?.name ?? "Véhicule";
-  const count = (st: string) => rentals.filter((r) => r.status === st).length + specials.filter((r) => r.status === st).length;
+  const nr = (...st: string[]) => rentals.filter((r) => st.includes(r.status)).length;
   const rl = rentals.filter((r) => !filter || r.status === filter);
   const sl = specials.filter((r) => !filter || r.status === filter);
+  const addDays = (d: string, n: number) => { const t = new Date(d + "T00:00:00"); t.setDate(t.getDate() + n); return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`; };
+  const soon = today ? addDays(today, 3) : "";
+  const departures = today ? rentals.filter((r) => r.status === "Réservation confirmée" && r.start_date >= today && r.start_date <= soon) : [];
+  const returns = today ? rentals.filter((r) => r.status === "Location en cours" && r.end_date >= today && r.end_date <= soon) : [];
+  const late = today ? rentals.filter((r) => r.status === "Location en cours" && r.end_date < today) : [];
+  const running = rentals.filter((r) => r.status === "Réservation confirmée" || r.status === "Location en cours");
 
   return (
     <div className="adm">
@@ -177,26 +191,23 @@ export default function AdminApp() {
         <button className="btn line" style={{ padding: "8px 14px" }} onClick={() => supabase.auth.signOut()}>Quitter</button>
       </header>
 
-      <div className="adm-sum">
-        <div><b>{count("Demande reçue")}</b>Nouvelles</div>
-        <div><b>{count("En vérification")}</b>En vérification</div>
-        <div><b>{count("Approuvée")}</b>Approuvées</div>
-        <div><b>{count("Payée")}</b>Payées</div>
-      </div>
 
       {msg && <p className="err" role="alert">{msg}</p>}
 
       <div className="cats" role="tablist">
+        <button className="chip" aria-pressed={tab === "dash"} onClick={() => setTab("dash")}>Tableau de bord</button>
         <button className="chip" aria-pressed={tab === "loc"} onClick={() => setTab("loc")}>Locations ({rentals.length})</button>
+        <button className="chip" aria-pressed={tab === "run"} onClick={() => setTab("run")}>Locations suivies ({running.length})</button>
         <button className="chip" aria-pressed={tab === "spe"} onClick={() => setTab("spe")}>Demandes spéciales ({specials.length})</button>
         <button className="chip" aria-pressed={tab === "veh"} onClick={() => setTab("veh")}>Véhicules ({vehicles.length})</button>
         <button className="chip" aria-pressed={tab === "par"} onClick={() => setTab("par")}>Partenaires ({apps.length})</button>
+        <button className="chip" aria-pressed={tab === "his"} onClick={() => setTab("his")}>Historique</button>
       </div>
 
       {(tab === "loc" || tab === "spe") && (
         <label className="adm-filter">Filtrer par statut
           <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="">Tous</option>{STATUTS.map((s) => <option key={s}>{s}</option>)}
+            <option value="">Tous</option>{(tab === "loc" ? RSTAT : SSTAT).map((s) => <option key={s}>{s}</option>)}
           </select>
         </label>
       )}
@@ -212,10 +223,56 @@ export default function AdminApp() {
               <p>Remise : {r.pickup_place}{r.return_place && r.return_place !== r.pickup_place ? ` · Retour : ${r.return_place}` : ""}</p>
               {r.notes && <p className="adm-note">{r.notes}</p>}
               <select value={r.status} onChange={(e) => setStatus("rental_requests", r.id, e.target.value)} aria-label="Statut">
-                {[...new Set([r.status, ...STATUTS])].map((s) => <option key={s}>{s}</option>)}
+                {[...new Set([r.status, ...RSTAT])].map((s) => <option key={s}>{s}</option>)}
               </select>
             </article>
           ))}
+        </div>
+      )}
+
+      {tab === "dash" && (
+        <>
+          <div className="adm-sum">
+            <div><b>{nr("Nouvelle demande")}</b>Nouvelles demandes</div>
+            <div><b>{nr("En cours de traitement", "Vérification de disponibilité", "Disponibilité confirmée", "Dossier client à compléter", "Proposition commerciale envoyée")}</b>En traitement</div>
+            <div><b>{nr("En attente de paiement", "Paiement à vérifier")}</b>Paiement en cours</div>
+            <div><b>{nr("Réservation confirmée")}</b>Confirmées</div>
+            <div><b>{nr("Location en cours")}</b>En cours</div>
+            <div><b>{specials.filter((x) => x.status === "Nouvelle demande").length}</b>Demandes spéciales</div>
+            <div><b>{apps.filter((a) => ["Soumise", "En attente de vérification", "En cours d’examen", "Documents complémentaires demandés"].includes(a.status)).length}</b>Partenaires à examiner</div>
+            <div><b>{vehicles.filter((v) => v.published).length} / {vehicles.length}</b>Véhicules publiés</div>
+          </div>
+          <h2 style={{ fontSize: 20 }}>Alertes</h2>
+          <div className="adm-list">
+            {late.length + departures.length + returns.length === 0 && <p>Aucune alerte.</p>}
+            {late.map((r) => <p key={r.id} className="err">Retour en retard : {vName(r.vehicle_id)} — {r.full_name} (prévu le {fmtDate(r.end_date)})</p>)}
+            {departures.map((r) => <p key={r.id}><b>Départ prochain</b> : {vName(r.vehicle_id)} — {r.full_name}, le {fmtDate(r.start_date)}</p>)}
+            {returns.map((r) => <p key={r.id}><b>Retour prochain</b> : {vName(r.vehicle_id)} — {r.full_name}, le {fmtDate(r.end_date)}</p>)}
+          </div>
+        </>
+      )}
+
+      {tab === "run" && (
+        <div className="adm-list">
+          {running.length === 0 && <p>Aucune location confirmée ou en cours.</p>}
+          {running.map((r) => (
+            <article className="adm-card" key={r.id}>
+              <div className="adm-head"><b>{vName(r.vehicle_id)}</b><small>{r.status}</small></div>
+              <p><b>{r.full_name}</b> · <a href={wa(r.phone)} target="_blank" rel="noreferrer">{r.phone}</a></p>
+              <p>Départ : {fmtDate(r.start_date)} · Retour : {fmtDate(r.end_date)}</p>
+              <p>Remise : {r.pickup_place}{r.return_place && r.return_place !== r.pickup_place ? ` · Retour : ${r.return_place}` : ""}</p>
+              <select value={r.status} onChange={(e) => setStatus("rental_requests", r.id, e.target.value)} aria-label="Statut">
+                {[...new Set([r.status, ...RSTAT])].map((s) => <option key={s}>{s}</option>)}
+              </select>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {tab === "his" && (
+        <div className="adm-list">
+          {hist.length === 0 && <p>Aucune action enregistrée pour le moment.</p>}
+          {hist.map((h) => <p key={h.id}><small>{fmtTime(h.created_at)} · {h.admin_email ?? "—"}</small><br /><b>{ENT[h.entity] ?? h.entity}</b> n° {h.entity_id ? h.entity_id.slice(0, 8).toUpperCase() : "—"} — {h.detail}</p>)}
         </div>
       )}
 
@@ -232,7 +289,7 @@ export default function AdminApp() {
               {r.preferences && <p className="adm-note">{r.preferences}</p>}
               {r.notes && <p className="adm-note">{r.notes}</p>}
               <select value={r.status} onChange={(e) => setStatus("special_requests", r.id, e.target.value)} aria-label="Statut">
-                {[...new Set([r.status, ...STATUTS])].map((s) => <option key={s}>{s}</option>)}
+                {[...new Set([r.status, ...SSTAT])].map((s) => <option key={s}>{s}</option>)}
               </select>
             </article>
           ))}

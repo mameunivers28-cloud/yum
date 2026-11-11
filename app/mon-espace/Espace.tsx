@@ -53,7 +53,7 @@ export default function Espace() {
         {rentals.length === 0 && <p>Aucune demande pour le moment. <Link href="/vehicules" style={{ color: "var(--gold)", fontWeight: 700 }}>Voir les véhicules</Link></p>}
         {rentals.map((x) => (
           <div className="adm-card" key={x.id}>
-            <div className="adm-head"><b>{(x.vehicle_id && names[x.vehicle_id]) || "Véhicule"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Demande reçue"}</span></div>
+            <div className="adm-head"><b>{(x.vehicle_id && names[x.vehicle_id]) || "Véhicule"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Nouvelle demande"}</span></div>
             <p>Du {fmt(x.start_date)} au {fmt(x.end_date)}{x.pickup_place ? ` · remise : ${x.pickup_place}` : ""}</p>
           </div>
         ))}
@@ -63,7 +63,7 @@ export default function Espace() {
         {specials.length === 0 && <p>Aucune demande personnalisée. <Link href="/demande-speciale" style={{ color: "var(--gold)", fontWeight: 700 }}>En faire une</Link></p>}
         {specials.map((x) => (
           <div className="adm-card" key={x.id}>
-            <div className="adm-head"><b>{[x.make, x.model].filter(Boolean).join(" ") || x.vehicle_type || "Véhicule au choix"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Demande reçue"}</span></div>
+            <div className="adm-head"><b>{[x.make, x.model].filter(Boolean).join(" ") || x.vehicle_type || "Véhicule au choix"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Nouvelle demande"}</span></div>
             <p>Du {fmt(x.start_date)} au {fmt(x.end_date)}</p>
           </div>
         ))}
