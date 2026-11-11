@@ -100,3 +100,6 @@ footer.site a{display:block;opacity:.85;text-decoration:none;margin-top:4px}foot
 .adm-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline}.adm-head small{opacity:.7}
 .adm-note{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:15px}
 .adm-veh{grid-template-columns:1fr auto;align-items:center}
+
+.credits{display:grid;gap:10px;padding-left:20px;margin:18px 0 0}
+.credits a{color:var(--blue)}

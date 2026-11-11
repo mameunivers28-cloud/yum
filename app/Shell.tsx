@@ -33,7 +33,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       <footer className="site"><div className="wrap">
         <div><Link className="logo" href="/" style={{ fontSize: 26 }}><svg aria-hidden="true"><use href="#mark" /></svg>YUM</Link><p style={{ margin: "8px 0 0", opacity: 0.8 }}>Location de véhicules à Dakar, Sénégal.</p></div>
         <div><b>Aide</b><a href="#">Contact et assistance</a><a href="#">Foire aux questions</a></div>
-        <div><b>Informations</b><a href="#">Conditions générales</a><a href="#">Politique de confidentialité</a><a href="#">Annulation et remboursement</a></div>
+        <div><b>Informations</b><a href="#">Conditions générales</a><a href="#">Politique de confidentialité</a><a href="#">Annulation et remboursement</a><Link href="/credits-photos">Crédits photos</Link></div>
       </div></footer>
     </>
   );

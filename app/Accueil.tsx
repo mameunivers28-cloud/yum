@@ -122,7 +122,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
       <footer className="site" id="contact"><div className="wrap">
         <div><a className="logo" href="#" style={{ fontSize: 26 }}><svg aria-hidden="true"><use href="#mark" /></svg>YUM</a><p style={{ margin: "8px 0 0", opacity: 0.8 }}>Location de véhicules à Dakar, Sénégal.</p></div>
         <div><b>Aide</b><a href="#">Contact et assistance</a><a href="#">Foire aux questions</a></div>
-        <div><b>Informations</b><a href="#">Conditions générales</a><a href="#">Politique de confidentialité</a><a href="#">Annulation et remboursement</a></div>
+        <div><b>Informations</b><a href="#">Conditions générales</a><a href="#">Politique de confidentialité</a><a href="#">Annulation et remboursement</a><Link href="/credits-photos">Crédits photos</Link></div>
       </div></footer>
     </>
   );
