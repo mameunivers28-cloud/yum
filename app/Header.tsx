@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 import Link from "next/link";
 
 const LINKS = [
@@ -13,6 +14,12 @@ const LINKS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(false);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUser(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUser(!!s));
+    return () => sub.subscription.unsubscribe();
+  }, []);
   const close = () => setOpen(false);
   return (
     <header className="site">
@@ -22,6 +29,7 @@ export default function Header() {
         </Link>
         <nav id="menu" className={open ? "open" : ""} aria-label="Navigation principale">
           {LINKS.map(([h, l]) => <Link key={h} href={h} onClick={close}>{l}</Link>)}
+          <Link href={user ? "/mon-espace" : "/connexion"} onClick={close}>{user ? "Mon espace" : "Connexion"}</Link>
           <Link className="btn gold navcta" href="/vehicules" onClick={close}>Réserver un véhicule</Link>
         </nav>
         <button className="burger" aria-expanded={open} aria-controls="menu" aria-label={open ? "Fermer le menu" : "Ouvrir le menu"} onClick={() => setOpen(!open)}>
