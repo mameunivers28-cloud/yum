@@ -2,12 +2,35 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "../../lib/supabase";
+import { waLink } from "../../lib/config";
+import { NEXT_RENTAL, NEXT_SPECIAL, NEXT_PARTNER, FRISE, friseIndex } from "../../lib/statuts";
 
 type Rental = { id: string; vehicle_id: string | null; start_date: string; end_date: string; pickup_place: string | null; status: string | null; created_at: string };
 type Special = { id: string; start_date: string; end_date: string; vehicle_type: string | null; make: string | null; model: string | null; status: string | null; created_at: string };
 
 type App = { id: string; vehicle_make: string; vehicle_model: string; status: string; created_at: string };
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+
+function Suite({ text, wa }: { text: string; wa: string }) {
+  return (
+    <div className="next-step">
+      <p><b>Et ensuite ?</b> {text}</p>
+      <a className="linkbtn" href={wa} target="_blank" rel="noreferrer">Écrire à YUM à propos de ce dossier →</a>
+    </div>
+  );
+}
+
+function Frise({ status }: { status: string }) {
+  const { step, issue } = friseIndex(status);
+  return (
+    <ol className="frise" aria-label="Progression du dossier">
+      {FRISE.map((l, i) => {
+        const cls = i < step ? "done" : i === step ? (issue === "ko" ? "ko" : issue === "wait" ? "wait" : issue === "ok" ? "done" : "on") : "";
+        return <li key={l} className={cls}><span>{i + 1}</span><em>{i === 2 && issue === "ok" ? "Approuvé" : i === 2 && issue === "ko" ? status : l}</em></li>;
+      })}
+    </ol>
+  );
+}
 
 export default function Espace() {
   const [state, setState] = useState<"load" | "out" | "in">("load");
@@ -54,7 +77,8 @@ export default function Espace() {
         {rentals.map((x) => (
           <div className="adm-card" key={x.id}>
             <div className="adm-head"><b>{(x.vehicle_id && names[x.vehicle_id]) || "Véhicule"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Nouvelle demande"}</span></div>
-            <p>Du {fmt(x.start_date)} au {fmt(x.end_date)}{x.pickup_place ? ` · remise : ${x.pickup_place}` : ""}</p>
+            <p>Demande n° {x.id.slice(0, 8).toUpperCase()} · du {fmt(x.start_date)} au {fmt(x.end_date)}{x.pickup_place ? ` · remise : ${x.pickup_place}` : ""}</p>
+            <Suite text={NEXT_RENTAL[x.status ?? "Nouvelle demande"] ?? "L’équipe YUM suit votre demande."} wa={waLink(`Bonjour YUM Afrique, je vous écris à propos de ma demande n° ${x.id.slice(0, 8).toUpperCase()} (${(x.vehicle_id && names[x.vehicle_id]) || "véhicule"}, du ${x.start_date} au ${x.end_date}). Statut affiché : ${x.status ?? "Nouvelle demande"}.`)} />
           </div>
         ))}
       </div>
@@ -64,7 +88,8 @@ export default function Espace() {
         {specials.map((x) => (
           <div className="adm-card" key={x.id}>
             <div className="adm-head"><b>{[x.make, x.model].filter(Boolean).join(" ") || x.vehicle_type || "Véhicule au choix"}</b><span className="tag" style={{ position: "static" }}>{x.status ?? "Nouvelle demande"}</span></div>
-            <p>Du {fmt(x.start_date)} au {fmt(x.end_date)}</p>
+            <p>Demande n° {x.id.slice(0, 8).toUpperCase()} · du {fmt(x.start_date)} au {fmt(x.end_date)}</p>
+            <Suite text={NEXT_SPECIAL[x.status ?? "Nouvelle demande"] ?? "L’équipe YUM suit votre demande."} wa={waLink(`Bonjour YUM Afrique, je vous écris à propos de ma demande personnalisée n° ${x.id.slice(0, 8).toUpperCase()}. Statut affiché : ${x.status ?? "Nouvelle demande"}.`)} />
           </div>
         ))}
       </div>
@@ -75,6 +100,8 @@ export default function Espace() {
             <div className="adm-card" key={x.id}>
               <div className="adm-head"><b>{x.vehicle_make} {x.vehicle_model}</b><span className="tag" style={{ position: "static" }}>{x.status}</span></div>
               <p>Dossier n° {x.id.slice(0, 8).toUpperCase()}</p>
+              <Frise status={x.status} />
+              <Suite text={NEXT_PARTNER[x.status] ?? "L’équipe YUM suit votre dossier."} wa={waLink(`Bonjour YUM Afrique, je vous écris à propos de mon dossier partenaire n° ${x.id.slice(0, 8).toUpperCase()}. Statut affiché : ${x.status}.`)} />
             </div>
           ))}
         </div>

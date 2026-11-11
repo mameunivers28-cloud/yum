@@ -8,6 +8,7 @@ import Modele from "./sections/Modele";
 import Pourquoi from "./sections/Pourquoi";
 import Demo from "./sections/Demo";
 import Services from "./sections/Services";
+import Dakar from "./sections/Dakar";
 import Faq from "./sections/Faq";
 
 const HERO = "https://commons.wikimedia.org/wiki/Special:FilePath/Beautiful_sunset_dakar_corniche.jpg?width=1800";
@@ -127,6 +128,8 @@ export default function Accueil({ cars }: { cars: Car[] }) {
         <div className="own"><h2>Mettez votre véhicule au travail</h2><p>Déposez votre candidature : YUM vérifie votre véhicule et vos documents, puis vous répond. Votre véhicule reste sous votre responsabilité, selon les conditions convenues avec YUM. Aucun revenu n’est garanti.</p><div className="cta-row"><Link className="btn navy" href="/devenir-partenaire">Devenir partenaire</Link><Link className="btn line" href="/proprietaires">Comment ça marche</Link></div></div>
         <div className="own alt"><h2>Un dossier suivi</h2><p>Vérification, suivi de votre dossier, gestion des disponibilités : vous savez toujours où en est votre candidature depuis votre espace.</p></div>
       </div></section>
+
+      <Dakar />
 
       <Faq />
 

@@ -278,3 +278,25 @@ footer.site .logo{color:#fff}.pagehead .eyebrow{color:var(--acc)}
 .recap{background:var(--off);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--ink)}
 .recap b{color:var(--head)}.recap ul{margin:8px 0;padding-left:18px}.recap small{color:#5b6572}
 .faqlinks{margin-top:22px;color:#5b6572}.faqlinks a{color:var(--navy);font-weight:600}
+
+/* refonte 3 : espace client, frise, micro-interactions */
+.next-step{background:var(--off);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14.5px}
+.next-step p{margin:0 0 4px!important}.next-step .linkbtn{text-decoration:none;padding:4px 0}
+.frise{list-style:none;display:flex;gap:6px;padding:0;margin:6px 0 2px;flex-wrap:wrap}
+.frise li{display:flex;align-items:center;gap:8px;flex:1;min-width:110px;font-size:13.5px;color:#5b6572}
+.frise span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--off);border:1px solid var(--line);font-weight:800;flex:none}
+.frise em{font-style:normal;font-weight:600}
+.frise .done span,.frise .on span{background:var(--navy);color:#fff;border-color:var(--navy)}
+.frise .on em,.frise .done em{color:var(--head)}
+.frise .wait span{background:#2A5FE8;color:#fff;border-color:#2A5FE8}
+.frise .ko span{background:#fff;color:#b3261e;border-color:#b3261e}.frise .ko em{color:#b3261e}
+.btn:active{transform:translateY(0) scale(.98)}
+.pic img{transition:transform .5s}.car:hover .pic img{transform:scale(1.03)}
+header.site nav a:not(.btn){position:relative}
+header.site nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+header.site nav a:not(.btn):hover::after{transform:scaleX(1)}
+.steps li{transition:transform .25s,box-shadow .25s}.steps li:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.own{transition:transform .25s,box-shadow .25s}.own:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.hyb li{transition:transform .25s,box-shadow .25s}.hyb li:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:translateX(2px)}
+@media(prefers-reduced-motion:reduce){.btn:active,.steps li:hover,.own:hover,.hyb li:hover,footer.site a:hover{transform:none}}

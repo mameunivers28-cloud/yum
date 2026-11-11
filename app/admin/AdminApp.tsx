@@ -71,11 +71,12 @@ function FinPanel({ r, open, toggle, adm, pays, onSave, onAdd, onStatus }: { r: 
 export default function AdminApp() {
   const [ready, setReady] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
-  const [tab, setTab] = useState<"dash" | "loc" | "run" | "spe" | "veh" | "par" | "his">("dash");
+  const [tab, setTab] = useState<"dash" | "loc" | "run" | "spe" | "cli" | "veh" | "par" | "his">("dash");
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [specials, setSpecials] = useState<Special[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [role, setRole] = useState<string>("");
+  const [cq, setCq] = useState("");
   const [pays, setPays] = useState<Pay[]>([]);
   const [radm, setRadm] = useState<Record<string, RAdm>>({});
   const [openR, setOpenR] = useState<string | null>(null);
@@ -270,6 +271,21 @@ export default function AdminApp() {
   const departures = today ? rentals.filter((r) => r.status === "Réservation confirmée" && r.start_date >= today && r.start_date <= soon) : [];
   const returns = today ? rentals.filter((r) => r.status === "Location en cours" && r.end_date >= today && r.end_date <= soon) : [];
   const late = today ? rentals.filter((r) => r.status === "Location en cours" && r.end_date < today) : [];
+  // Clients : regroupés par courriel à partir des demandes réelles (aucune donnée supplémentaire).
+  const clients = (() => {
+    const m = new Map<string, { key: string; name: string; phone: string; email: string; rentals: number; specials: number; last: string }>();
+    const add = (r: { full_name: string; phone: string; email: string; created_at: string }, k: "rentals" | "specials") => {
+      const key = r.email.trim().toLowerCase();
+      const c = m.get(key) ?? { key, name: r.full_name, phone: r.phone, email: r.email, rentals: 0, specials: 0, last: r.created_at };
+      c[k] += 1;
+      if (r.created_at > c.last) { c.last = r.created_at; c.name = r.full_name; c.phone = r.phone; }
+      m.set(key, c);
+    };
+    rentals.forEach((r) => add(r, "rentals"));
+    specials.forEach((r) => add(r, "specials"));
+    return [...m.values()].sort((a, b) => (a.last < b.last ? 1 : -1));
+  })();
+  const cl = clients.filter((c) => !cq.trim() || `${c.name} ${c.email} ${c.phone}`.toLowerCase().includes(cq.trim().toLowerCase()));
   const running = rentals.filter((r) => r.status === "Réservation confirmée" || r.status === "Location en cours");
 
   return (
@@ -289,6 +305,7 @@ export default function AdminApp() {
         <button className="chip" aria-pressed={tab === "loc"} onClick={() => setTab("loc")}>Locations ({rentals.length})</button>
         <button className="chip" aria-pressed={tab === "run"} onClick={() => setTab("run")}>Locations suivies ({running.length})</button>
         <button className="chip" aria-pressed={tab === "spe"} onClick={() => setTab("spe")}>Demandes spéciales ({specials.length})</button>
+        <button className="chip" aria-pressed={tab === "cli"} onClick={() => setTab("cli")}>Clients ({clients.length})</button>
         <button className="chip" aria-pressed={tab === "veh"} onClick={() => setTab("veh")}>Véhicules ({vehicles.length})</button>
         {isMgr && <button className="chip" aria-pressed={tab === "par"} onClick={() => setTab("par")}>Partenaires ({apps.length})</button>}
         <button className="chip" aria-pressed={tab === "his"} onClick={() => setTab("his")}>Historique</button>
@@ -360,6 +377,24 @@ export default function AdminApp() {
             </article>
           ))}
         </div>
+      )}
+
+      {tab === "cli" && (
+        <>
+          <label className="adm-filter">Rechercher un client
+            <input value={cq} onChange={(e) => setCq(e.target.value)} placeholder="Nom, courriel ou téléphone" />
+          </label>
+          <div className="adm-list">
+            {cl.length === 0 && <p>Aucun client.</p>}
+            {cl.map((c) => (
+              <article className="adm-card" key={c.key}>
+                <div className="adm-head"><b>{c.name}</b><small>Dernière demande : {fmtTime(c.last)}</small></div>
+                <p><a href={wa(c.phone)} target="_blank" rel="noreferrer">{c.phone}</a> · <a href={`mailto:${c.email}`}>{c.email}</a></p>
+                <p>{c.rentals} demande{c.rentals > 1 ? "s" : ""} de location · {c.specials} demande{c.specials > 1 ? "s" : ""} personnalisée{c.specials > 1 ? "s" : ""}</p>
+              </article>
+            ))}
+          </div>
+        </>
       )}
 
       {tab === "his" && (
