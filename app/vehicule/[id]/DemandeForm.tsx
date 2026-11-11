@@ -53,6 +53,7 @@ export default function DemandeForm({ vehicleId, vehicleName, year, dailyPrice, 
       est_total: rent,
       notes: f.notes.trim() || null,
     });
+    if (error && String(error.message).includes("VEHICLE_UNAVAILABLE")) { setErr("Ce véhicule est indisponible sur au moins une de ces dates. Aucune demande n’a été envoyée : choisissez d’autres dates ou demandez-nous une alternative sur WhatsApp."); setState("error"); return; }
     if (error) { setErr("Votre demande n’a pas pu être enregistrée. Aucune demande n’a été envoyée : réessayez dans un instant."); console.error(error); setState("error"); return; }
     setRef(id.slice(0, 8).toUpperCase());
     setState("ok");

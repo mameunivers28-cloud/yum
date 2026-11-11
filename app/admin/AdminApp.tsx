@@ -14,9 +14,12 @@ type PApp = { id: string; status: string; full_name: string; phone: string; what
 type PAdm = { notes: string | null; commission_pct: number | null; final_daily_price: number | null };
 const DOCLABEL: Record<string, string> = { photo_ext: "Photo extérieure", photo_int: "Photo intérieure", photo_dash: "Tableau de bord", doc_vehicle: "Document véhicule", id: "Identité", ownership: "Propriété / autorisation" };
 
+type Block = { id: string; vehicle_id: string; start_date: string; end_date: string; kind: string };
 const fmtDate = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
 const fmtTime = (d: string) => new Date(d).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const wa = (p: string) => "https://wa.me/" + p.replace(/\D/g, "");
+
+const NOPE = "Modification non enregistrée : ce compte n’a pas les droits d’administration (ou la ligne n’existe plus). Connectez-vous avec le compte administrateur.";
 
 export default function AdminApp() {
   const [ready, setReady] = useState(false);
@@ -25,6 +28,7 @@ export default function AdminApp() {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [specials, setSpecials] = useState<Special[]>([]);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [apps, setApps] = useState<PApp[]>([]);
   const [padm, setPadm] = useState<Record<string, PAdm>>({});
   const [open, setOpen] = useState<string | null>(null);
@@ -45,6 +49,10 @@ export default function AdminApp() {
       supabase.from("vehicles").select("id,name,daily_price,owner_type,published,verification_status").order("name"),
     ]);
     if (r.error || s.error || v.error) { setMsg("Accès refusé : ce compte n’est pas administrateur."); return; }
+    const adm = await supabase.rpc("is_admin");
+    if (adm.data !== true) { setMsg("Ce compte n’est pas administrateur : vous ne pouvez rien modifier. Déconnectez-vous et utilisez le compte administrateur."); }
+    const bl = await supabase.from("vehicle_availability").select("*").order("start_date");
+    if (!bl.error) setBlocks((bl.data ?? []) as Block[]);
     const [pa, pm] = await Promise.all([
       supabase.from("partner_applications").select("*").order("created_at", { ascending: false }),
       supabase.from("partner_application_admin").select("*"),
@@ -65,27 +73,34 @@ export default function AdminApp() {
   }
 
   async function setStatus(table: "rental_requests" | "special_requests", id: string, status: string) {
-    const { error } = await supabase.from(table).update({ status }).eq("id", id);
+    const { data, error } = await supabase.from(table).update({ status }).eq("id", id).select("id");
     if (error) { setMsg("Changement impossible."); return; }
+    if (!data || data.length === 0) { setMsg(NOPE); return; }
+    setMsg("");
     if (table === "rental_requests") setRentals((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
     else setSpecials((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
   }
 
   async function setVerif(v: Vehicle, verification_status: string) {
-    const { error } = await supabase.from("vehicles").update({ verification_status }).eq("id", v.id);
+    const { data, error } = await supabase.from("vehicles").update({ verification_status }).eq("id", v.id).select("id");
     if (error) { setMsg("Changement impossible."); return; }
+    if (!data || data.length === 0) { setMsg(NOPE); return; }
+    setMsg("");
     setVehicles((l) => l.map((x) => (x.id === v.id ? { ...x, verification_status } : x)));
   }
 
   async function togglePublish(v: Vehicle) {
-    const { error } = await supabase.from("vehicles").update({ published: !v.published }).eq("id", v.id);
+    const { data, error } = await supabase.from("vehicles").update({ published: !v.published }).eq("id", v.id).select("id");
     if (error) { setMsg("Changement impossible."); return; }
+    if (!data || data.length === 0) { setMsg(NOPE); return; }
+    setMsg("");
     setVehicles((l) => l.map((x) => (x.id === v.id ? { ...x, published: !v.published } : x)));
   }
 
   async function setAppStatus(a: PApp, status: string) {
-    const { error } = await supabase.from("partner_applications").update({ status }).eq("id", a.id);
+    const { data, error } = await supabase.from("partner_applications").update({ status }).eq("id", a.id).select("id");
     if (error) { setMsg("Changement impossible."); return; }
+    if (!data || data.length === 0) { setMsg(NOPE); return; }
     setApps((l) => l.map((x) => (x.id === a.id ? { ...x, status } : x)));
   }
 
@@ -99,6 +114,21 @@ export default function AdminApp() {
     const { data, error } = await supabase.storage.from("partner-docs").createSignedUrl(path, 120);
     if (error || !data) { setMsg("Document inaccessible."); return; }
     window.open(data.signedUrl, "_blank", "noopener");
+  }
+
+  async function addBlock(v: Vehicle, f: FormData) {
+    const start = String(f.get("start") || ""), end = String(f.get("end") || ""), kind = String(f.get("kind") || "Indisponible");
+    if (!start || !end || end < start) { setMsg("Dates invalides : la fin doit suivre le début."); return; }
+    const { data, error } = await supabase.from("vehicle_availability").insert({ vehicle_id: v.id, start_date: start, end_date: end, kind }).select("*");
+    if (error) { setMsg(error.message.includes("va_no_overlap") ? "Cette période chevauche une période déjà bloquée pour ce véhicule." : "Ajout impossible."); return; }
+    if (!data || data.length === 0) { setMsg(NOPE); return; }
+    setMsg(""); setBlocks((l) => [...l, ...(data as Block[])].sort((a, b) => a.start_date.localeCompare(b.start_date)));
+  }
+
+  async function delBlock(b: Block) {
+    const { data, error } = await supabase.from("vehicle_availability").delete().eq("id", b.id).select("id");
+    if (error || !data || data.length === 0) { setMsg(NOPE); return; }
+    setBlocks((l) => l.filter((x) => x.id !== b.id));
   }
 
   async function createVehicle(a: PApp) {
@@ -260,6 +290,18 @@ export default function AdminApp() {
                 </select>
                 <button className={v.published ? "btn line" : "btn"} style={{ padding: "8px 14px" }} onClick={() => togglePublish(v)}>{v.published ? "Publié · masquer" : "Masqué · publier"}</button>
                 {v.verification_status !== "Approuvé" && <small>Invisible au public tant que non approuvé.</small>}
+              </div>
+              <div className="adm-detail" style={{ gridColumn: "1 / -1" }}>
+                <p><b>Disponibilités</b> <small>(une demande ne bloque rien ; seule une réservation confirmée ou un blocage protège les dates)</small></p>
+                {blocks.filter((b) => b.vehicle_id === v.id).map((b) => (
+                  <p key={b.id}>{b.kind} · du {fmtDate(b.start_date)} au {fmtDate(b.end_date)} <button className="linkbtn" onClick={() => delBlock(b)}>Supprimer</button></p>
+                ))}
+                <form className="fgrid3" onSubmit={(e) => { e.preventDefault(); const form = e.currentTarget; addBlock(v, new FormData(form)); form.reset(); }}>
+                  <label>Du<input name="start" type="date" required /></label>
+                  <label>Au<input name="end" type="date" required /></label>
+                  <label>Type<select name="kind"><option>Indisponible</option><option>Réservation confirmée</option><option>Maintenance</option></select></label>
+                  <button className="btn line" type="submit">Bloquer ces dates</button>
+                </form>
               </div>
             </article>
           ))}

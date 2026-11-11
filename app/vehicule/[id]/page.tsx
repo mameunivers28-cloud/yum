@@ -7,6 +7,7 @@ import Shell from "../../Shell";
 import { WhatsAppButton } from "../../WhatsApp";
 import DemandeForm from "./DemandeForm";
 import Gallery from "./Gallery";
+import Indispo from "./Indispo";
 
 type Vehicle = {
   id: string; name: string; make: string | null; year: number | null; category: string; transmission: string;
@@ -25,6 +26,7 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { data } = await supabase.from("vehicles").select(COLS).eq("id", id).eq("published", true).maybeSingle();
   if (!data) notFound();
   const v = data as unknown as Vehicle;
+  const { data: av } = await supabase.from("vehicle_availability").select("start_date,end_date").eq("vehicle_id", id).order("start_date");
   const photos = (v.photos && v.photos.length ? v.photos : v.photo_url ? [v.photo_url] : []);
   const url = `${SITE_URL}/vehicule/${v.id}`;
   const wa = `Bonjour YUM Afrique, je souhaite obtenir des informations sur le véhicule suivant :\n\nVéhicule : ${v.name}\nAnnée : ${v.year ?? "non précisée"}\nPrix journalier : ${fmt(v.daily_price)} FCFA\nLien : ${url}\n\nJe souhaite connaître sa disponibilité et les conditions de location.`;
@@ -57,6 +59,7 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
             {v.deposit_amount ? <li><b>Dépôt de garantie</b>{fmt(v.deposit_amount)} FCFA</li> : null}
             {v.delivery_fee ? <li><b>Frais de livraison</b>{fmt(v.delivery_fee)} FCFA</li> : null}
           </ul>
+          <Indispo periods={(av ?? []) as { start_date: string; end_date: string }[]} />
           {v.description && v.description.trim() && (<><h2 style={{ fontSize: 22, marginTop: 24 }}>Description</h2><p className="desc">{v.description}</p></>)}
           {v.equipment && v.equipment.length > 0 && (<><h2 style={{ fontSize: 22, marginTop: 22 }}>Équipements et options</h2><ul className="equip">{v.equipment.map((e) => <li key={e}>{e}</li>)}</ul></>)}
           {shown.length > 0 && (<><h2 style={{ fontSize: 22, marginTop: 22 }}>Conditions</h2><div className="cond">{shown.map(([t, x]) => <div key={t}><b>{t}</b><p>{x}</p></div>)}</div></>)}
