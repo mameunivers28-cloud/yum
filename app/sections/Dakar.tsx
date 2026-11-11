@@ -6,7 +6,7 @@ export default function Dakar() {
       <p className="eyebrow dark">Louer à Dakar</p>
       <h2>Louer une voiture à Dakar avec YUM</h2>
       <p className="sub">Que ce soit pour un séjour, un déplacement professionnel ou le quotidien, voici comment choisir.</p>
-      <div className="two">
+      <div className="two dakar">
         <div className="own">
           <h3>Un SUV ou un 4x4</h3>
           <p>Pour plus d’espace ou de confort sur la route, consultez les SUV et 4x4 publiés. La catégorie, le nombre de places et la transmission sont indiqués sur chaque fiche.</p>

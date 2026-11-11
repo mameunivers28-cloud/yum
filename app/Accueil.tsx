@@ -22,7 +22,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
   const [cat, setCat] = useState("");
   const [place, setPlace] = useState("Dakar");
   const [msg, setMsg] = useState("");
-  const featured = cars.slice(0, 3);
+  const featured = cars.slice(0, 4);
 
   function search(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -85,7 +85,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
           <button className="btn gold" type="submit">Rechercher</button>
         </form>
         <p className="msg" role="status">{msg}</p>
-        <div className="grid">
+        <div className="grid home-grid">
           {featured.length === 0 && <p>Aucun véhicule pour le moment. Faites une demande personnalisée.</p>}
           {featured.map((c) => <CarCard key={c.id} c={c} />)}
         </div>
