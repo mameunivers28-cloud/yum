@@ -218,6 +218,8 @@ footer.site .logo{color:#fff}.pagehead .eyebrow{color:var(--acc)}
 .est .sep{grid-column:1/-1;border-top:1px solid var(--line);margin:4px 0}
 .est .note{display:block;margin-top:8px;font-size:13px;color:#5b6572}
 .fgrid3{display:grid;gap:14px;grid-template-columns:minmax(0,1fr) 120px}
+.fgrid3 input,.fgrid3 select,.fgrid3 label,.adm input,.adm select,.adm textarea{min-width:0;max-width:100%}
+@media(max-width:480px){.fgrid3{grid-template-columns:minmax(0,1fr)}}
 .book-sticky{display:none}
 @media(max-width:899px){.book-sticky{display:flex;position:sticky;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);padding:10px 16px;gap:10px;align-items:center;justify-content:space-between;margin:0 -20px}}
 
