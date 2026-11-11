@@ -1,5 +1,7 @@
 import Shell from "../Shell";
 import LeadForm from "../LeadForm";
+import { WhatsAppButton } from "../WhatsApp";
+import { WA_PARTNER } from "../../lib/config";
 
 export const metadata = { title: "Devenir partenaire — YUM" };
 
@@ -19,6 +21,7 @@ export default function Page() {
             <li><b>Nous gérons les demandes</b>Vous gardez votre voiture tant qu’une location n’est pas confirmée.</li>
             <li><b>Remise et retour encadrés</b>État des lieux avec photos, kilométrage et carburant.</li>
           </ol>
+          <div className="cta-row"><WhatsAppButton message={WA_PARTNER} label="Écrire à YUM sur WhatsApp" /></div>
         </div>
         <LeadForm table="partner_requests" submit="Devenir partenaire" okTitle="Demande reçue" okText="Merci. Notre équipe vous contacte pour la suite. Aucun engagement à ce stade."
           fields={[

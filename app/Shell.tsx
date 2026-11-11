@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import Header from "./Header";
+import { WhatsAppFloat } from "./WhatsApp";
+import { WA_GENERAL } from "../lib/config";
 
 export default function Shell({ children }: { children: ReactNode }) {
   return (
@@ -19,6 +21,7 @@ export default function Shell({ children }: { children: ReactNode }) {
       <a className="skip" href="#contenu">Aller au contenu</a>
       <Header />
       <main id="contenu">{children}</main>
+      <WhatsAppFloat message={WA_GENERAL} />
       <footer className="site">
         <div className="wrap fgrid4">
           <div>
