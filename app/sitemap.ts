@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 
 const PAGES = [
   "", "/vehicules", "/demande-speciale", "/devenir-partenaire", "/a-propos", "/contact",
-  "/voyageurs-diaspora", "/familles-professionnels", "/proprietaires",
+  "/voyageurs-diaspora", "/familles-professionnels", "/proprietaires", "/comment-ca-marche",
   "/conditions-generales", "/confidentialite", "/annulation", "/remboursement", "/depot-de-garantie",
 ];
 

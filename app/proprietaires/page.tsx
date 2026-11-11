@@ -1,28 +1,60 @@
-import MarketingPage from "../MarketingPage";
+import Link from "next/link";
+import Shell from "../Shell";
+import { WhatsAppButton } from "../WhatsApp";
 import { WA_PARTNER } from "../../lib/config";
+import { Steps, PROPOSER } from "../sections/Parcours";
 
 export const metadata = {
-  title: "Propriétaires : proposer votre véhicule à la location au Sénégal — YUM",
-  description: "Devenez propriétaire partenaire YUM : déposez votre candidature, faites vérifier votre véhicule et suivez votre dossier. Aucun revenu n’est garanti.",
+  title: "Mettre mon véhicule en location au Sénégal — particulier ou professionnel — YUM",
+  description: "Particulier ou agence : proposez votre véhicule à la location sur YUM Afrique. L’équipe examine votre candidature avant toute publication. Aucun revenu n’est garanti.",
   alternates: { canonical: "/proprietaires" },
 };
 
 export default function Page() {
   return (
-    <MarketingPage m={{
-      eyebrow: "Propriétaires partenaires",
-      title: "Proposez votre véhicule avec YUM",
-      lead: "YUM examine votre dossier et, après validation, peut publier votre véhicule. Il reste sous votre responsabilité, selon les conditions convenues avec YUM. Aucun revenu n’est garanti.",
-      points: [
-        ["M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z", "Vérification", "Le véhicule et les documents sont contrôlés avant toute publication."],
-        ["M4 5h16v14H4zM8 9h8M8 13h5", "Suivi du dossier", "Suivez le statut de votre candidature depuis votre espace."],
-        ["M4 5h16v14H4zM4 9h16", "Disponibilités", "Les périodes où le véhicule n’est pas disponible sont gérées dans la plateforme."],
-        ["M9 12l2 2 4-4M5 4h14v16H5z", "Documents privés", "Vos documents ne sont accessibles qu’aux personnes autorisées de YUM."],
-      ],
-      steps: [["Déposez votre candidature", "Créez un compte et remplissez le formulaire."], ["Transmettez vos documents", "Joignez les pièces demandées."], ["Faites vérifier le véhicule", "YUM contrôle le dossier."], ["Recevez une réponse", "Approbation, complément demandé ou refus."], ["Mise à disposition", "Selon les modalités convenues avec YUM."]],
-      note: "Les conditions de rémunération sont définies avec YUM lors de l’examen de votre dossier.",
-      ctas: [["/devenir-partenaire", "Devenir partenaire"], ["/contact", "Contacter YUM"]],
-      wa: WA_PARTNER,
-    }} />
+    <Shell>
+      <section className="pagehead"><div className="wrap">
+        <p className="eyebrow">Mettre mon véhicule en location</p>
+        <h1>Particuliers et professionnels : proposez vos véhicules sur YUM</h1>
+        <p className="lead">Vous avez une voiture, ou une agence qui en gère plusieurs ? Soumettez votre candidature de partenaire. YUM examine votre dossier avant toute publication.</p>
+      </div></section>
+
+      <section className="s"><div className="wrap">
+        <h2>Vous êtes…</h2>
+        <div className="two">
+          <div className="own">
+            <h2>Un particulier</h2>
+            <ul className="tick">
+              <li>Vous pouvez proposer votre véhicule à la location.</li>
+              <li>YUM examine votre candidature ; il n’est pas publié automatiquement.</li>
+              <li>Les conditions de mise à disposition sont définies avant toute exploitation.</li>
+              <li>Les revenus éventuels dépendent des locations réalisées et des conditions convenues. Aucun revenu n’est garanti.</li>
+            </ul>
+            <Link className="btn navy" href="/devenir-partenaire?profil=particulier">Je suis un particulier</Link>
+          </div>
+          <div className="own">
+            <h2>Une agence ou une entreprise</h2>
+            <ul className="tick">
+              <li>Vous pouvez demander à rejoindre YUM comme partenaire.</li>
+              <li>Vous pouvez proposer plusieurs véhicules : un dossier par véhicule.</li>
+              <li>Chaque véhicule doit satisfaire aux conditions de validation.</li>
+              <li>Les modalités peuvent être adaptées à votre activité. YUM ne promet pas de volume de réservations.</li>
+            </ul>
+            <Link className="btn navy" href="/devenir-partenaire?profil=pro">Je représente une agence ou une entreprise</Link>
+          </div>
+        </div>
+      </div></section>
+
+      <section className="s soft"><div className="wrap">
+        <h2>Comment ça se passe</h2>
+        <Steps items={PROPOSER} />
+        <p className="notice" style={{ marginTop: 22 }}>Votre véhicule ne devient pas la propriété de YUM. Responsabilités, disponibilités, assurances et modalités financières sont définies contractuellement.</p>
+      </div></section>
+
+      <section className="s"><div className="wrap"><div className="cta">
+        <div><h2>Une question avant de vous lancer ?</h2><p>L’équipe YUM vous répond.</p></div>
+        <WhatsAppButton message={WA_PARTNER} label="Écrire à YUM sur WhatsApp" />
+      </div></div></section>
+    </Shell>
   );
 }

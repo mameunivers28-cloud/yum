@@ -90,6 +90,7 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
             <WhatsAppButton message={waDispo} label="Vérifier la disponibilité" className="btn line" />
             <Link className="btn line" href="/vehicules">Découvrir les autres véhicules</Link>
           </div>
+          <p className="altperso">Ce véhicule ne correspond pas à votre besoin ou à vos dates ? <Link href="/demande-speciale">Faire une demande personnalisée</Link> : YUM cherche dans sa flotte et auprès de ses partenaires.</p>
         </div>
         <aside id="demande" className="book">
           <p className="notice">Réservation soumise à confirmation : vous ne payez qu’après approbation de votre dossier.</p>

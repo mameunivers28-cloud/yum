@@ -45,7 +45,7 @@ export default function Catalogue({ cars }: { cars: Car[] }) {
         {active > 0 && <button className="linkbtn" onClick={reset}>Réinitialiser les filtres</button>}
       </div>
       {list.length === 0 ? (
-        <div className="empty"><h3>Aucun véhicule ne correspond</h3><p>Modifiez vos filtres ou faites une demande personnalisée.</p><Link className="btn navy" href="/demande-speciale">Faire une demande personnalisée</Link></div>
+        <div className="empty"><h3>Aucun véhicule ne correspond</h3><p>Modifiez vos filtres, ou décrivez votre besoin : YUM peut rechercher le véhicule pour vous dans sa flotte et auprès de ses partenaires.</p><Link className="btn navy" href="/demande-speciale">Faire une demande personnalisée</Link></div>
       ) : (
         <div className="grid">{list.map((c) => <CarCard key={c.id} c={c} />)}</div>
       )}

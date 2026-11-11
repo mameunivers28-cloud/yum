@@ -3,15 +3,15 @@ import Wizard from "./Wizard";
 import { WhatsAppButton } from "../WhatsApp";
 import { WA_PARTNER } from "../../lib/config";
 
-export const metadata = { title: "Devenir partenaire — YUM", description: "Propriétaires : déposez votre candidature pour proposer votre véhicule à la location avec YUM. Aucun revenu n’est garanti.", alternates: { canonical: "/devenir-partenaire" } };
+export const metadata = { title: "Mettre mon véhicule en location — YUM", description: "Particulier ou professionnel : proposez votre véhicule à la location sur YUM Afrique. L’équipe examine votre candidature avant toute publication. Aucun revenu n’est garanti.", alternates: { canonical: "/devenir-partenaire" } };
 
 export default function Page() {
   return (
     <Shell>
       <section className="pagehead"><div className="wrap">
-        <p className="eyebrow">Propriétaires</p>
-        <h1>Mettez votre véhicule au travail</h1>
-        <p className="lead">Proposez votre véhicule à la location : YUM examine votre dossier et, après validation, peut le publier. Aucun revenu n’est garanti.</p>
+        <p className="eyebrow">Particulier ou professionnel</p>
+        <h1>Mettre mon véhicule en location</h1>
+        <p className="lead">Proposez votre véhicule sur YUM Afrique. Votre candidature de partenaire est examinée par l’équipe avant toute publication. Aucun revenu n’est garanti.</p>
       </div></section>
       <section className="s"><div className="wrap two2">
         <div>

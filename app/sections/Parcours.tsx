@@ -1,0 +1,45 @@
+import Link from "next/link";
+
+export const LOUER: [string, string][] = [
+  ["Recherche", "Parcourez le catalogue et choisissez vos dates."],
+  ["Demande", "Envoyez votre demande. Ce n’est pas une réservation."],
+  ["Vérification", "Une personne de l’équipe vérifie disponibilité et dossier."],
+  ["Conditions finales", "YUM vous communique les conditions avant confirmation."],
+  ["Paiement validé", "Vous payez seulement après approbation du dossier."],
+  ["Confirmation", "La réservation est confirmée après validation du paiement."],
+];
+export const PROPOSER: [string, string][] = [
+  ["Candidature", "Décrivez votre véhicule, en tant que particulier ou professionnel."],
+  ["Documents", "Joignez les pièces demandées, conservées de façon privée."],
+  ["Vérification", "YUM examine le dossier et le véhicule."],
+  ["Conditions de partenariat", "Elles sont définies avec vous avant toute exploitation."],
+  ["Publication", "Votre véhicule n’est publié qu’après approbation."],
+  ["Gestion des demandes", "YUM reçoit et examine les demandes de location."],
+];
+
+export function Steps({ items }: { items: [string, string][] }) {
+  return <ol className="steps six">{items.map(([t, p]) => <li key={t}><b>{t}</b>{p}</li>)}</ol>;
+}
+
+export default function Parcours() {
+  return (
+    <section className="s soft" id="fonctionnement"><div className="wrap">
+      <p className="eyebrow dark">Comment ça marche</p>
+      <h2>Deux parcours, un accompagnement humain</h2>
+      <div className="duo">
+        <div>
+          <h3>Pour louer un véhicule</h3>
+          <Steps items={LOUER} />
+          <p className="notice">Une demande n’est pas une réservation confirmée.</p>
+          <div className="cta-row"><Link className="btn navy" href="/vehicules">Trouver un véhicule</Link></div>
+        </div>
+        <div>
+          <h3>Pour proposer un véhicule</h3>
+          <Steps items={PROPOSER} />
+          <p className="notice">Particulier ou professionnel. Aucun revenu n’est garanti.</p>
+          <div className="cta-row"><Link className="btn navy" href="/proprietaires">Mettre mon véhicule en location</Link></div>
+        </div>
+      </div>
+    </div></section>
+  );
+}

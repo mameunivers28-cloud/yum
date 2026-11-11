@@ -29,8 +29,8 @@ export default function Shell({ children }: { children: ReactNode }) {
             <p className="fdesc">Location de véhicules à Dakar, Sénégal. Flotte YUM et propriétaires partenaires vérifiés.</p>
             <a href={waLink(WA_GENERAL)} target="_blank" rel="noreferrer">Nous écrire sur WhatsApp</a>
           </div>
-          <div><b>Navigation</b><Link href="/">Accueil</Link><Link href="/vehicules">Véhicules</Link><Link href="/#fonctionnement">Comment ça marche</Link><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link></div>
-          <div><b>Services</b><Link href="/vehicules">Location</Link><Link href="/demande-speciale">Demande personnalisée</Link><Link href="/devenir-partenaire">Devenir partenaire</Link><Link href="/voyageurs-diaspora">Voyageurs et diaspora</Link><Link href="/familles-professionnels">Familles et professionnels</Link><Link href="/proprietaires">Propriétaires</Link></div>
+          <div><b>Navigation</b><Link href="/">Accueil</Link><Link href="/vehicules">Véhicules</Link><Link href="/comment-ca-marche">Comment ça marche</Link><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link></div>
+          <div><b>Services</b><Link href="/vehicules">Louer un véhicule</Link><Link href="/demande-speciale">Demande personnalisée</Link><Link href="/proprietaires">Mettre mon véhicule en location</Link><Link href="/voyageurs-diaspora">Voyageurs et diaspora</Link><Link href="/familles-professionnels">Familles et professionnels</Link><Link href="/devenir-partenaire">Devenir partenaire</Link></div>
           <div><b>Informations</b><Link href="/conditions-generales">Conditions générales</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/annulation">Annulation</Link><Link href="/remboursement">Remboursement</Link><Link href="/depot-de-garantie">Dépôt de garantie</Link><Link href="/credits-photos">Crédits photos</Link></div>
         </div>
         <div className="wrap copy">© YUM Afrique. Tous droits réservés.</div>

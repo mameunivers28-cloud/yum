@@ -33,6 +33,13 @@ export default function Wizard() {
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
+  const [pro, setPro] = useState(false);
+  const [company, setCompany] = useState("");
+  const [fleet, setFleet] = useState("");
+
+  useEffect(() => {
+    try { if (new URLSearchParams(window.location.search).get("profil") === "pro") setPro(true); } catch { /* ignore */ }
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -62,7 +69,7 @@ export default function Wizard() {
   );
 
   function validate(s: number): string {
-    if (s === 0) { if (!d.full_name.trim() || !d.phone.trim() || !d.email.trim() || !d.city.trim()) return "Renseignez votre nom, téléphone, courriel et ville."; }
+    if (s === 0) { if (!d.full_name.trim() || !d.phone.trim() || !d.email.trim() || !d.city.trim()) return "Renseignez votre nom, téléphone, courriel et ville."; if (pro && !company.trim()) return "Indiquez le nom de votre entreprise."; }
     if (s === 1) {
       if (!d.vehicle_make.trim() || !d.vehicle_model.trim() || !d.plate.trim()) return "Renseignez la marque, le modèle et l’immatriculation.";
       const y = Number(d.vehicle_year); if (!y || y < 1990 || y > 2100) return "Indiquez une année valide.";
@@ -106,7 +113,7 @@ export default function Wizard() {
         id, status: "Soumise", accepted_terms: true,
         full_name: d.full_name.trim(), phone: d.phone.trim(), whatsapp: d.whatsapp.trim() || null, email: d.email.trim(), city: d.city.trim(), address_zone: d.address_zone.trim() || null,
         vehicle_make: d.vehicle_make.trim(), vehicle_model: d.vehicle_model.trim(), vehicle_year: Number(d.vehicle_year), plate: d.plate.trim(), category: d.category, transmission: d.transmission, fuel: d.fuel, engine: d.engine.trim() || null,
-        seats: Number(d.seats), has_ac: d.has_ac === "oui", mileage_km: d.mileage_km ? Number(d.mileage_km) : null, description: d.description.trim() || null,
+        seats: Number(d.seats), has_ac: d.has_ac === "oui", mileage_km: d.mileage_km ? Number(d.mileage_km) : null, description: ((pro ? `[Professionnel] Entreprise : ${company.trim()}${fleet.trim() ? ` · Flotte : ${fleet.trim()} véhicule(s)` : ""}. Ce dossier concerne un seul véhicule.` : "") + (pro && d.description.trim() ? "\n" : "") + d.description.trim()) || null,
         equipment: d.equipment.split(",").map((s) => s.trim()).filter(Boolean),
         min_daily_price: Number(d.min_daily_price), availability_note: d.availability_note.trim() || null, min_rental_days: d.min_rental_days ? Number(d.min_rental_days) : null,
         special_conditions: d.special_conditions.trim() || null, delivery_possible: d.delivery_possible === "oui", delivery_zones: d.delivery_zones.trim() || null,
@@ -131,7 +138,16 @@ export default function Wizard() {
 
       {step === 0 && (<>
         <h2>Vos informations</h2>
+        <fieldset className="profil"><legend>Vous êtes</legend>
+          <label className="chk"><input type="radio" name="profil" checked={!pro} onChange={() => setPro(false)} /> Un particulier</label>
+          <label className="chk"><input type="radio" name="profil" checked={pro} onChange={() => setPro(true)} /> Une agence ou une entreprise</label>
+        </fieldset>
+        {pro && <p className="notice">Un dossier correspond à un véhicule. Vous pouvez soumettre un dossier par véhicule : chacun est examiné séparément avant toute publication.</p>}
         <div className="fgrid">
+          {pro && <>
+            <label>Nom de l’entreprise<input value={company} onChange={(e) => setCompany(e.target.value)} autoComplete="organization" /></label>
+            <label>Véhicules dans votre flotte <small>(facultatif)</small><input type="number" inputMode="numeric" value={fleet} onChange={(e) => setFleet(e.target.value)} /></label>
+          </>}
           <label className="full">Nom complet<input required value={d.full_name} onChange={set("full_name")} autoComplete="name" /></label>
           <label>Téléphone<input type="tel" value={d.phone} onChange={set("phone")} autoComplete="tel" /></label>
           <label>WhatsApp <small>(si différent)</small><input type="tel" value={d.whatsapp} onChange={set("whatsapp")} /></label>
