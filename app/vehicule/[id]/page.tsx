@@ -26,15 +26,16 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <section className="s"><div className="wrap">
-      <p className="back"><Link href="/#vehicules">← Retour aux véhicules</Link></p>
+      <p className="back"><Link href="/vehicules">← Retour aux véhicules</Link></p>
       <div className="detail">
         <div>
           <div className="pic big">
             <span className={v.owner_type === "YUM" ? "tag" : "tag p"}>{v.owner_type === "YUM" ? "Flotte YUM" : "Partenaire"}</span>
             {v.photo_url ? <img src={v.photo_url} alt={v.name} /> : <svg viewBox="0 0 120 50" aria-hidden="true"><use href="#car" /></svg>}
           </div>
+          <p className="eyebrow dark">{v.owner_type === "YUM" ? "Flotte YUM" : "Véhicule partenaire"}</p>
           <h1 className="dt">{v.name}</h1>
-          <div className="price">{fmt(v.daily_price)} FCFA <small>par jour</small></div>
+          <div className="price big">{fmt(v.daily_price)} <small>FCFA / jour</small></div>
           <ul className="specs">
             {v.year ? <li><b>Année</b>{v.year}</li> : null}
             <li><b>Catégorie</b>{v.category}</li>
@@ -51,7 +52,8 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
             </>
           )}
         </div>
-        <aside id="demande">
+        <aside id="demande" className="book">
+          <p className="notice">Réservation soumise à confirmation : vous ne payez qu’après approbation de votre dossier.</p>
           <DemandeForm vehicleId={v.id} vehicleName={v.name} dailyPrice={v.daily_price} />
         </aside>
       </div>

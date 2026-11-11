@@ -54,15 +54,18 @@ export default function SpecialForm() {
 
   return (
     <form className="formcard" onSubmit={submit}>
+      <h3 className="fsec"><span>1</span>Vos coordonnées</h3>
       <div className="fgrid">
         <label>Nom complet<input required autoComplete="name" value={f.full_name} onChange={set("full_name")} /></label>
         <label>Téléphone / WhatsApp<input required type="tel" autoComplete="tel" value={f.phone} onChange={set("phone")} /></label>
       </div>
       <label>Courriel<input required type="email" autoComplete="email" value={f.email} onChange={set("email")} /></label>
+      <h3 className="fsec"><span>2</span>Vos dates</h3>
       <div className="fgrid">
         <label>Date de départ<input type="date" required min={minDate} value={f.start_date} onChange={set("start_date")} /></label>
         <label>Date de retour<input type="date" required min={f.start_date || minDate} value={f.end_date} onChange={set("end_date")} /></label>
       </div>
+      <h3 className="fsec"><span>3</span>Le véhicule recherché</h3>
       <div className="fgrid">
         <label>Type de véhicule
           <select value={f.vehicle_type} onChange={set("vehicle_type")}>
@@ -84,13 +87,16 @@ export default function SpecialForm() {
         <label>Nombre de places<input type="number" inputMode="numeric" min={1} max={20} value={f.seats} onChange={set("seats")} /></label>
       </div>
       <label>Préférences <small>(climatisation, siège bébé, chauffeur…)</small><textarea rows={3} value={f.preferences} onChange={set("preferences")} /></label>
+      <h3 className="fsec"><span>4</span>Remise et retour</h3>
       <div className="fgrid">
         <label>Lieu de remise<input placeholder="Aéroport AIBD, hôtel…" value={f.pickup_place} onChange={set("pickup_place")} /></label>
         <label>Lieu de retour<input value={f.return_place} onChange={set("return_place")} /></label>
       </div>
+      <h3 className="fsec"><span>5</span>Précisions</h3>
       <label>Autres précisions <small>(facultatif)</small><textarea rows={3} value={f.notes} onChange={set("notes")} /></label>
       {err && <p className="err" role="alert">{err}</p>}
-      <button className="btn" type="submit" disabled={state === "sending"}>{state === "sending" ? "Envoi…" : "Envoyer ma demande spéciale"}</button>
+      <p className="est">Vous ne payez rien maintenant. Nous vous proposons des offres après vérification.</p>
+      <button className="btn gold" type="submit" disabled={state === "sending"}>{state === "sending" ? "Envoi…" : "Envoyer ma demande"}</button>
     </form>
   );
 }

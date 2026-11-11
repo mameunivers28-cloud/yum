@@ -1,129 +1,112 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import type { Car } from "./cars";
+import CarCard from "./CarCard";
 
-export type Car = { id: string; n: string; y: number; c: string; t: string; s: number; p: number; o: "YUM" | "Partenaire"; img: string };
+const HERO = "https://commons.wikimedia.org/wiki/Special:FilePath/Beautiful_sunset_dakar_corniche.jpg?width=1800";
 
-const CATS = [["", "Tous"], ["Citadine", "Citadines"], ["Berline", "Berlines"], ["SUV", "SUV"], ["4x4", "4x4"]];
-const fmt = (n: number) => n.toLocaleString("fr-FR");
+const TRUST: [string, string, string][] = [
+  ["M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3zm-3 9l2 2 4-4", "Propriétaires vérifiés", "Chaque véhicule partenaire est vérifié par YUM avant publication."],
+  ["M3 7h18v10H3zM3 11h18M7 15h3", "Paiement après approbation", "Vous ne payez qu’une fois votre dossier approuvé."],
+  ["M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11zm0-8.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z", "Remise où vous voulez", "À l’aéroport ou à l’adresse de votre choix, à Dakar."],
+  ["M4 5h16v14H4zM8 9h8M8 13h5", "Remise et retour encadrés", "État des lieux avec photos, kilométrage et carburant."],
+];
 
 export default function Accueil({ cars }: { cars: Car[] }) {
-  const [cat, setCat] = useState("");
+  const router = useRouter();
   const [d1, setD1] = useState("");
   const [d2, setD2] = useState("");
+  const [cat, setCat] = useState("");
+  const [place, setPlace] = useState("Dakar");
   const [msg, setMsg] = useState("");
-  const list = cars.filter((c) => !cat || c.c === cat);
+  const featured = cars.slice(0, 3);
 
   function search(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (d2 < d1) { setMsg("La date de retour doit suivre la date de départ."); return; }
-    setMsg(`Résultats pour Dakar, du ${d1} au ${d2}.`);
-    document.getElementById("vehicules")?.scrollIntoView();
+    if (d1 && d2 && d2 < d1) { setMsg("La date de retour doit suivre la date de départ."); return; }
+    const q = new URLSearchParams();
+    if (cat) q.set("categorie", cat);
+    if (d1) q.set("du", d1);
+    if (d2) q.set("au", d2);
+    q.set("lieu", place);
+    router.push(`/vehicules?${q.toString()}`);
   }
 
   return (
     <>
-      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-        <symbol id="car" viewBox="0 0 120 50">
-          <path fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" d="M6 36v-8l10-3 14-12h46l16 12 16 3v8" />
-          <path fill="none" stroke="currentColor" strokeWidth="3" d="M30 13l-5 12M52 13v12M76 13l8 12M16 36h12M52 36h24M96 36h8" />
-          <circle cx="36" cy="38" r="7" fill="currentColor" /><circle cx="90" cy="38" r="7" fill="currentColor" />
-        </symbol>
-        <symbol id="mark" viewBox="0 0 48 48">
-          <rect x="4" y="4" width="40" height="40" rx="10" fill="#2A5FE8" transform="rotate(45 24 24)" />
-          <path d="M15 15l9 11 9-11M24 26v9" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="24" cy="9" r="3" fill="#fff" />
-        </symbol>
-      </svg>
-
-      <header className="site"><div className="wrap">
-        <a className="logo" href="#" aria-label="YUM, accueil"><svg aria-hidden="true"><use href="#mark" /></svg>YUM</a>
-        <nav aria-label="Navigation principale">
-          <a href="#vehicules">Nos véhicules</a><a href="#fonctionnement">Comment ça marche</a>
-          <a href="#proprietaire">Devenir propriétaire</a><a href="#contact">Contact</a>
-        </nav>
-        <a className="btn" href="#connexion" style={{ padding: "9px 16px" }}>Connexion</a>
-      </div></header>
-
-      <main>
-        <div className="hero"><div className="wrap">
-          <div>
-            <h1>Trouvez le véhicule idéal pour vos déplacements au Sénégal.</h1>
-            <p>Voitures de la flotte YUM et de propriétaires partenaires vérifiés. Remise à l’aéroport ou à l’adresse de votre choix, à Dakar.</p>
-            <form className="search" onSubmit={search} aria-label="Rechercher un véhicule">
-              <label>Ville<select><option>Dakar</option></select></label>
-              <label>Départ<input type="date" value={d1} onChange={(e) => setD1(e.target.value)} required /></label>
-              <label>Retour<input type="date" value={d2} min={d1} onChange={(e) => setD2(e.target.value)} required /></label>
-              <label>Catégorie
-                <select value={cat} onChange={(e) => setCat(e.target.value)}>
-                  <option value="">Toutes</option><option>Citadine</option><option>Berline</option><option>SUV</option><option>4x4</option>
-                </select>
-              </label>
-              <button className="btn" type="submit">Rechercher</button>
-            </form>
-            <div className="msg" role="status">{msg}</div>
+      <section className="hero" style={{ ["--hero" as string]: `url(${HERO})` }}>
+        <div className="wrap hero-in">
+          <p className="eyebrow">Location de véhicules à Dakar</p>
+          <h1>Votre mobilité, <em>notre priorité.</em></h1>
+          <p className="lead">Voitures de la flotte YUM et de propriétaires partenaires vérifiés. Remise à l’aéroport ou à l’adresse de votre choix.</p>
+          <div className="hero-cta">
+            <Link className="btn gold" href="/vehicules">Découvrir nos véhicules</Link>
+            <Link className="btn ghost" href="/demande-speciale">Demander un véhicule</Link>
           </div>
-          <div className="arch"><svg viewBox="0 0 120 50" aria-hidden="true"><use href="#car" /></svg><span>Photo principale à ajouter</span></div>
-        </div><div className="zz" style={{ ["--zz" as string]: "#9DBDFF", position: "relative" }} /></div>
+          <form className="search" onSubmit={search} aria-label="Rechercher un véhicule">
+            <label>Lieu de départ
+              <select value={place} onChange={(e) => setPlace(e.target.value)}>
+                <option>Dakar</option><option>Aéroport AIBD</option>
+              </select>
+            </label>
+            <label>Départ<input type="date" value={d1} onChange={(e) => setD1(e.target.value)} /></label>
+            <label>Retour<input type="date" value={d2} min={d1} onChange={(e) => setD2(e.target.value)} /></label>
+            <label>Catégorie
+              <select value={cat} onChange={(e) => setCat(e.target.value)}>
+                <option value="">Toutes</option><option>Citadine</option><option>Berline</option><option>SUV</option><option>4x4</option>
+              </select>
+            </label>
+            <button className="btn gold" type="submit">Rechercher</button>
+          </form>
+          <p className="msg" role="status">{msg}</p>
+        </div>
+      </section>
 
-        <div className="welcome">Dalal ak jàmm. Bienvenue au Sénégal.</div>
+      <section className="s trust"><div className="wrap">
+        <ul className="trust-grid">
+          {TRUST.map(([d, t, p]) => (
+            <li key={t}>
+              <span className="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={d} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+              <b>{t}</b><p>{p}</p>
+            </li>
+          ))}
+        </ul>
+      </div></section>
 
-        <section className="s" id="vehicules"><div className="wrap">
-          <h2>Nos véhicules</h2>
-          <p className="sub">La disponibilité affichée est confirmée par notre équipe avant toute réservation.</p>
-          <div className="cats" role="group" aria-label="Catégories">
-            {CATS.map(([v, l]) => (
-              <button key={l} className="chip" aria-pressed={cat === v} onClick={() => setCat(v)}>{l}</button>
-            ))}
-          </div>
-          <div className="grid">
-            {list.length === 0 && <p>Aucun véhicule pour le moment. Faites une demande spéciale.</p>}
-            {list.map((c) => (
-              <article className="car" key={c.id}>
-                <div className="pic">
-                  <span className={c.o === "YUM" ? "tag" : "tag p"}>{c.o === "YUM" ? "Flotte YUM" : "Partenaire"}</span>
-                  {c.img ? <img src={c.img} alt={c.n} /> : <svg viewBox="0 0 120 50" aria-hidden="true"><use href="#car" /></svg>}
-                </div>
-                <div className="body">
-                  <h3>{c.n}</h3>
-                  <small>{c.y}, {c.c}, {c.t}, {c.s} places</small>
-                  <div className="price">{fmt(c.p)} FCFA <small>par jour</small></div>
-                  <Link className="btn line" style={{ marginTop: 10 }} href={`/vehicule/${c.id}`}>Voir le détail</Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div></section>
+      <section className="s soft"><div className="wrap">
+        <div className="sec-head">
+          <div><p className="eyebrow dark">Notre sélection</p><h2>Nos véhicules</h2><p className="sub">La disponibilité est confirmée par notre équipe avant toute réservation.</p></div>
+          <Link className="btn line" href="/vehicules">Voir tout le catalogue</Link>
+        </div>
+        <div className="grid">
+          {featured.length === 0 && <p>Aucun véhicule pour le moment. Faites une demande personnalisée.</p>}
+          {featured.map((c) => <CarCard key={c.id} c={c} />)}
+        </div>
+      </div></section>
 
-        <div className="zz" />
-        <section className="s band" id="fonctionnement"><div className="wrap">
-          <h2>Comment ça marche</h2>
-          <p className="sub">Vous ne payez qu’après l’approbation de votre dossier.</p>
-          <ol className="steps">
-            <li><b>Envoyez votre demande</b>Choisissez un véhicule et vos dates.</li>
-            <li><b>Nous vérifions</b>Disponibilité, dates et lieu de remise.</li>
-            <li><b>Complétez votre dossier</b>Pièce d’identité et permis valide.</li>
-            <li><b>Payez et partez</b>Réservation confirmée après paiement.</li>
-          </ol>
-        </div></section>
+      <section className="s" id="fonctionnement"><div className="wrap">
+        <p className="eyebrow dark">Simple et transparent</p>
+        <h2>Comment ça marche</h2>
+        <p className="sub">Vous ne payez qu’après l’approbation de votre dossier.</p>
+        <ol className="steps">
+          <li><b>Envoyez votre demande</b>Choisissez un véhicule et vos dates.</li>
+          <li><b>Nous vérifions</b>Disponibilité, dates et lieu de remise.</li>
+          <li><b>Complétez votre dossier</b>Pièce d’identité et permis valide.</li>
+          <li><b>Payez et partez</b>Réservation confirmée après paiement.</li>
+        </ol>
+      </div></section>
 
-        <section className="s"><div className="wrap"><div className="cta">
-          <div><h2>Vous ne trouvez pas votre voiture ?</h2><p>Faites une demande spéciale. Nous cherchons dans notre flotte et auprès de nos partenaires, puis nous vous proposons des offres.</p></div>
-          <Link className="btn w" href="/demande-speciale">Faire une demande spéciale</Link>
-        </div></div></section>
+      <section className="s" style={{ paddingTop: 0 }}><div className="wrap"><div className="cta">
+        <div><h2>Vous ne trouvez pas votre voiture ?</h2><p>Faites une demande personnalisée. Nous cherchons dans notre flotte et auprès de nos partenaires, puis nous vous proposons des offres.</p></div>
+        <Link className="btn gold" href="/demande-speciale">Faire une demande personnalisée</Link>
+      </div></div></section>
 
-        <section className="s" id="proprietaire" style={{ paddingTop: 0 }}><div className="wrap two">
-          <div className="own"><h2>Mettez votre véhicule au travail</h2><p>Proposez-le à la location : YUM vérifie, publie, gère les demandes et organise la remise. Vous gardez votre voiture tant qu’une location n’est pas confirmée.</p><a className="btn" href="#devenir-proprietaire">Devenir propriétaire partenaire</a></div>
-          <div className="own" style={{ borderColor: "var(--line)" }}><h2>Une location structurée</h2><p>Chaque remise et chaque restitution s’accompagnent d’un état des lieux avec photos, kilométrage et carburant, conservé dans votre dossier.</p></div>
-        </div></section>
-      </main>
-
-      <div className="zz" style={{ ["--zz" as string]: "#0F2A6B" }} />
-      <footer className="site" id="contact"><div className="wrap">
-        <div><a className="logo" href="#" style={{ fontSize: 26 }}><svg aria-hidden="true"><use href="#mark" /></svg>YUM</a><p style={{ margin: "8px 0 0", opacity: 0.8 }}>Location de véhicules à Dakar, Sénégal.</p></div>
-        <div><b>Aide</b><a href="#">Contact et assistance</a><a href="#">Foire aux questions</a></div>
-        <div><b>Informations</b><a href="#">Conditions générales</a><a href="#">Politique de confidentialité</a><a href="#">Annulation et remboursement</a><Link href="/credits-photos">Crédits photos</Link></div>
-      </div></footer>
+      <section className="s soft"><div className="wrap two">
+        <div className="own"><h2>Mettez votre véhicule au travail</h2><p>Proposez-le à la location : YUM vérifie, publie, gère les demandes et organise la remise. Vous gardez votre voiture tant qu’une location n’est pas confirmée.</p><Link className="btn navy" href="/devenir-partenaire">Devenir partenaire</Link></div>
+        <div className="own alt"><h2>Une location structurée</h2><p>Chaque remise et chaque restitution s’accompagnent d’un état des lieux avec photos, kilométrage et carburant, conservé dans votre dossier.</p></div>
+      </div></section>
     </>
   );
 }

@@ -3,6 +3,7 @@ import Shell from "../Shell";
 export const metadata = { title: "Crédits photos — YUM" };
 
 const CREDITS = [
+  ["Photo d’accueil (corniche de Dakar) — temporaire", "Issiaga_Photography", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0/", "https://commons.wikimedia.org/wiki/File:Beautiful_sunset_dakar_corniche.jpg"],
   ["Toyota Yaris", "Tokumeigakarinoaoshima", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0/", "https://commons.wikimedia.org/wiki/File:Toyota_YARiS_1.5_G_2WD%E3%83%BBCVT_(5BA-MXPA10-AHXGB)_front.jpg"],
   ["Toyota Corolla", "Mateusmatsuda", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/", "https://commons.wikimedia.org/wiki/File:Toyota_Corolla_sedan_E210_hydrid.jpg"],
   ["Hyundai Tucson", "Alexander Migl", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0/", "https://commons.wikimedia.org/wiki/File:Hyundai_Tucson_(NX4)_1X7A0424.jpg"],
