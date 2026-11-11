@@ -6,7 +6,8 @@ const STATUTS = ["Demande reçue", "En vérification", "Approuvée", "Refusée",
 
 type Rental = { id: string; vehicle_id: string | null; full_name: string; phone: string; email: string; start_date: string; end_date: string; pickup_place: string; return_place: string | null; notes: string | null; status: string; created_at: string };
 type Special = { id: string; full_name: string; phone: string; email: string; city: string | null; start_date: string; end_date: string; vehicle_type: string | null; make: string | null; model: string | null; daily_budget: number | null; transmission: string | null; seats: number | null; preferences: string | null; pickup_place: string | null; return_place: string | null; notes: string | null; status: string; created_at: string };
-type Vehicle = { id: string; name: string; daily_price: number; owner_type: string; published: boolean };
+const VERIF = ["En attente de vérification", "En cours d’examen", "Informations complémentaires demandées", "Approuvé", "Refusé", "Suspendu"];
+type Vehicle = { id: string; name: string; daily_price: number; owner_type: string; published: boolean; verification_status: string };
 
 const fmtDate = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
 const fmtTime = (d: string) => new Date(d).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -33,7 +34,7 @@ export default function AdminApp() {
     const [r, s, v] = await Promise.all([
       supabase.from("rental_requests").select("*").order("created_at", { ascending: false }),
       supabase.from("special_requests").select("*").order("created_at", { ascending: false }),
-      supabase.from("vehicles").select("id,name,daily_price,owner_type,published").order("name"),
+      supabase.from("vehicles").select("id,name,daily_price,owner_type,published,verification_status").order("name"),
     ]);
     if (r.error || s.error || v.error) { setMsg("Accès refusé : ce compte n’est pas administrateur."); return; }
     setRentals((r.data ?? []) as Rental[]); setSpecials((s.data ?? []) as Special[]); setVehicles((v.data ?? []) as Vehicle[]);
@@ -54,6 +55,12 @@ export default function AdminApp() {
     if (error) { setMsg("Changement impossible."); return; }
     if (table === "rental_requests") setRentals((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
     else setSpecials((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
+  }
+
+  async function setVerif(v: Vehicle, verification_status: string) {
+    const { error } = await supabase.from("vehicles").update({ verification_status }).eq("id", v.id);
+    if (error) { setMsg("Changement impossible."); return; }
+    setVehicles((l) => l.map((x) => (x.id === v.id ? { ...x, verification_status } : x)));
   }
 
   async function togglePublish(v: Vehicle) {
@@ -158,7 +165,13 @@ export default function AdminApp() {
           {vehicles.map((v) => (
             <article className="adm-card adm-veh" key={v.id}>
               <div><b>{v.name}</b><br /><small>{v.owner_type} · {v.daily_price.toLocaleString("fr-FR")} FCFA/jour</small></div>
-              <button className={v.published ? "btn line" : "btn"} style={{ padding: "8px 14px" }} onClick={() => togglePublish(v)}>{v.published ? "Publié · masquer" : "Masqué · publier"}</button>
+              <div style={{ display: "grid", gap: 8, minWidth: 0 }}>
+                <select aria-label={`Vérification de ${v.name}`} value={v.verification_status} onChange={(e) => setVerif(v, e.target.value)}>
+                  {VERIF.map((x) => <option key={x}>{x}</option>)}
+                </select>
+                <button className={v.published ? "btn line" : "btn"} style={{ padding: "8px 14px" }} onClick={() => togglePublish(v)}>{v.published ? "Publié · masquer" : "Masqué · publier"}</button>
+                {v.verification_status !== "Approuvé" && <small>Invisible au public tant que non approuvé.</small>}
+              </div>
             </article>
           ))}
         </div>

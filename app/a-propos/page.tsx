@@ -15,7 +15,7 @@ export default function Page() {
         <div className="own"><h2>Notre modèle</h2><p>Une flotte détenue par YUM, complétée par des véhicules de propriétaires partenaires. Chaque véhicule est vérifié avant d’être publié.</p></div>
         <div className="own alt"><h2>Notre engagement</h2><p>Vous ne payez qu’après l’approbation de votre dossier, et chaque remise ou restitution s’accompagne d’un état des lieux avec photos.</p></div>
       </div>
-      <div className="wrap" style={{ marginTop: 28 }}><Link className="btn navy" href="/vehicules">Découvrir nos véhicules</Link></div></section>
+      <div className="wrap" style={{ marginTop: 28 }}><p><b>YUM Afrique a été fondée par Mame Mor Sylla.</b></p><Link className="btn navy" href="/vehicules">Découvrir nos véhicules</Link></div></section>
     </Shell>
   );
 }

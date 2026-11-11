@@ -30,7 +30,7 @@ export default function Shell({ children }: { children: ReactNode }) {
           </div>
           <div><b>Louer</b><Link href="/vehicules">Nos véhicules</Link><Link href="/demande-speciale">Demande personnalisée</Link><Link href="/#fonctionnement">Comment ça marche</Link></div>
           <div><b>YUM</b><Link href="/devenir-partenaire">Devenir partenaire</Link><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link></div>
-          <div><b>Informations</b><Link href="/credits-photos">Crédits photos</Link></div>
+          <div><b>Informations</b><Link href="/conditions-generales">Conditions générales</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/annulation">Annulation</Link><Link href="/remboursement">Remboursement</Link><Link href="/depot-de-garantie">Dépôt de garantie</Link><Link href="/credits-photos">Crédits photos</Link></div>
         </div>
         <div className="wrap copy">© YUM Afrique. Tous droits réservés.</div>
       </footer>

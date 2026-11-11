@@ -75,6 +75,14 @@ export default function Accueil({ cars }: { cars: Car[] }) {
         </ul>
       </div></section>
 
+      <section className="s"><div className="wrap">
+        <p className="eyebrow dark">Nos engagements</p>
+        <h2>Une location sérieuse et transparente</h2>
+        <ul className="eng">
+          {["Propriétaires et véhicules vérifiés avant publication", "Demandes examinées avant toute confirmation", "Conditions de location communiquées clairement", "Accompagnement par l’équipe YUM", "État du véhicule documenté au départ et au retour", "Assistance et contact accessibles"].map((t) => <li key={t}>{t}</li>)}
+        </ul>
+      </div></section>
+
       <section className="s soft"><div className="wrap">
         <div className="sec-head">
           <div><p className="eyebrow dark">Notre sélection</p><h2>Nos véhicules</h2><p className="sub">La disponibilité est confirmée par notre équipe avant toute réservation.</p></div>
