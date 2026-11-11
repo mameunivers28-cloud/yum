@@ -458,3 +458,13 @@ footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:t
   body:has(.mbar) .wa-float{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 }
 @media(prefers-reduced-motion:reduce){.path:hover{transform:none}}
+
+/* Bandeau d'information */
+.devbar{background:linear-gradient(180deg,#FFC24B,#F5A623);color:#0B1F55;border-bottom:1px solid rgba(11,31,85,.18)}
+.devbar-in{padding-top:10px;padding-bottom:10px;text-align:center;display:grid;gap:2px}
+.devbar p{margin:0}
+.devbar-t{font-size:15px;font-weight:800;letter-spacing:.01em}
+.devbar-tag{background:#0B1F55;color:#FFD27A;padding:2px 9px;border-radius:999px;font-size:13px;margin-left:2px;white-space:nowrap}
+.devbar-d{font-size:13.5px;line-height:1.4;font-weight:500}
+.devbar-s{font-size:11.5px;opacity:.78;font-weight:600;letter-spacing:.03em}
+@media(max-width:640px){.devbar-in{padding-top:8px;padding-bottom:8px}.devbar-t{font-size:14px}.devbar-tag{font-size:12px}.devbar-d{font-size:12.5px;line-height:1.35}.devbar-s{font-size:11px}}

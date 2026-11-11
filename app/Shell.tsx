@@ -19,6 +19,13 @@ export default function Shell({ children }: { children: ReactNode }) {
         </symbol>
       </svg>
       <a className="skip" href="#contenu">Aller au contenu</a>
+      <div className="devbar" role="status">
+        <div className="wrap devbar-in">
+          <p className="devbar-t"><span aria-hidden="true">⚠️</span> <b>YUM — Plateforme </b><b className="devbar-tag">en cours de développement</b></p>
+          <p className="devbar-d">Notre plateforme se prépare à vous accueillir prochainement. Nous travaillons actuellement à finaliser votre expérience.</p>
+          <p className="devbar-s">Une initiative de Mame Mor Sylla.</p>
+        </div>
+      </div>
       <Header />
       <main id="contenu">{children}</main>
       <WhatsAppFloat message={WA_GENERAL} />
