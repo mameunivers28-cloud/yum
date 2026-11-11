@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import Header from "./Header";
 import { WhatsAppFloat } from "./WhatsApp";
-import { WA_GENERAL } from "../lib/config";
+import { WA_GENERAL, waLink } from "../lib/config";
 
 export default function Shell({ children }: { children: ReactNode }) {
   return (
@@ -27,9 +27,10 @@ export default function Shell({ children }: { children: ReactNode }) {
           <div>
             <Link className="logo" href="/"><svg aria-hidden="true"><use href="#mark" /></svg><span>YUM</span></Link>
             <p className="fdesc">Location de véhicules à Dakar, Sénégal. Flotte YUM et propriétaires partenaires vérifiés.</p>
+            <a href={waLink(WA_GENERAL)} target="_blank" rel="noreferrer">Nous écrire sur WhatsApp</a>
           </div>
-          <div><b>Louer</b><Link href="/vehicules">Nos véhicules</Link><Link href="/demande-speciale">Demande personnalisée</Link><Link href="/#fonctionnement">Comment ça marche</Link></div>
-          <div><b>YUM</b><Link href="/devenir-partenaire">Devenir partenaire</Link><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link></div>
+          <div><b>Navigation</b><Link href="/">Accueil</Link><Link href="/vehicules">Véhicules</Link><Link href="/#fonctionnement">Comment ça marche</Link><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link></div>
+          <div><b>Services</b><Link href="/vehicules">Location</Link><Link href="/demande-speciale">Demande personnalisée</Link><Link href="/devenir-partenaire">Devenir partenaire</Link><Link href="/voyageurs-diaspora">Voyageurs et diaspora</Link><Link href="/professionnels">Professionnels</Link><Link href="/familles">Familles</Link><Link href="/proprietaires">Propriétaires</Link></div>
           <div><b>Informations</b><Link href="/conditions-generales">Conditions générales</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/annulation">Annulation</Link><Link href="/remboursement">Remboursement</Link><Link href="/depot-de-garantie">Dépôt de garantie</Link><Link href="/credits-photos">Crédits photos</Link></div>
         </div>
         <div className="wrap copy">© YUM Afrique. Tous droits réservés.</div>

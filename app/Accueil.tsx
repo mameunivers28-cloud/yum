@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Car } from "./cars";
 import CarCard from "./CarCard";
+import Pourquoi from "./sections/Pourquoi";
+import Demo from "./sections/Demo";
+import Services from "./sections/Services";
+import Faq from "./sections/Faq";
 
 const HERO = "https://commons.wikimedia.org/wiki/Special:FilePath/Beautiful_sunset_dakar_corniche.jpg?width=1800";
 
@@ -39,10 +43,10 @@ export default function Accueil({ cars }: { cars: Car[] }) {
       <section className="hero" style={{ ["--hero" as string]: `url(${HERO})` }}>
         <div className="wrap hero-in">
           <p className="eyebrow">Location de véhicules à Dakar</p>
-          <h1>Votre mobilité, <em>notre priorité.</em></h1>
-          <p className="lead">Voitures de la flotte YUM et de propriétaires partenaires vérifiés. Remise à l’aéroport ou à l’adresse de votre choix.</p>
+          <h1>Votre mobilité <em>commence ici.</em></h1>
+          <p className="lead">Découvrez une nouvelle façon de louer votre véhicule au Sénégal. Choisissez votre voiture, organisez votre déplacement et bénéficiez d’un accompagnement à chaque étape.</p>
           <div className="hero-cta">
-            <Link className="btn gold" href="/vehicules">Découvrir nos véhicules</Link>
+            <Link className="btn gold" href="/vehicules">Trouver un véhicule</Link>
             <Link className="btn ghost" href="/demande-speciale">Demander un véhicule</Link>
           </div>
           <form className="search" onSubmit={search} aria-label="Rechercher un véhicule">
@@ -86,7 +90,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
       <section className="s soft"><div className="wrap">
         <div className="sec-head">
           <div><p className="eyebrow dark">Notre sélection</p><h2>Nos véhicules</h2><p className="sub">La disponibilité est confirmée par notre équipe avant toute réservation.</p></div>
-          <Link className="btn line" href="/vehicules">Voir tout le catalogue</Link>
+          <Link className="btn line" href="/vehicules">Voir tous les véhicules</Link>
         </div>
         <div className="grid">
           {featured.length === 0 && <p>Aucun véhicule pour le moment. Faites une demande personnalisée.</p>}
@@ -94,17 +98,22 @@ export default function Accueil({ cars }: { cars: Car[] }) {
         </div>
       </div></section>
 
-      <section className="s" id="fonctionnement"><div className="wrap">
+      <Pourquoi />
+
+      <section className="s soft" id="fonctionnement"><div className="wrap">
         <p className="eyebrow dark">Simple et transparent</p>
-        <h2>Comment ça marche</h2>
-        <p className="sub">Vous ne payez qu’après l’approbation de votre dossier.</p>
+        <h2>Comment ça marche ?</h2>
+        <p className="sub">Une demande, une vérification humaine, puis la confirmation : la réservation n’est jamais instantanée.</p>
         <ol className="steps">
-          <li><b>Envoyez votre demande</b>Choisissez un véhicule et vos dates.</li>
-          <li><b>Nous vérifions</b>Disponibilité, dates et lieu de remise.</li>
-          <li><b>Complétez votre dossier</b>Pièce d’identité et permis valide.</li>
-          <li><b>Payez et partez</b>Réservation confirmée après paiement.</li>
+          <li><b>Choisissez votre véhicule</b>Parcourez le catalogue et sélectionnez vos dates.</li>
+          <li><b>Envoyez votre demande</b>Ce n’est pas encore une réservation.</li>
+          <li><b>YUM vérifie</b>Disponibilité et dossier, par une personne de l’équipe.</li>
+          <li><b>Confirmez</b>Vous recevez les conditions finales et confirmez après validation du paiement.</li>
         </ol>
       </div></section>
+
+      <Demo />
+      <Services />
 
       <section className="s" style={{ paddingTop: 0 }}><div className="wrap"><div className="cta">
         <div><h2>Vous ne trouvez pas votre voiture ?</h2><p>Faites une demande personnalisée. Nous cherchons dans notre flotte et auprès de nos partenaires, puis nous vous proposons des offres.</p></div>
@@ -112,9 +121,16 @@ export default function Accueil({ cars }: { cars: Car[] }) {
       </div></div></section>
 
       <section className="s soft"><div className="wrap two">
-        <div className="own"><h2>Mettez votre véhicule au travail</h2><p>Proposez-le à la location : YUM vérifie, publie, gère les demandes et organise la remise. Vous gardez votre voiture tant qu’une location n’est pas confirmée.</p><Link className="btn navy" href="/devenir-partenaire">Devenir partenaire</Link></div>
-        <div className="own alt"><h2>Une location structurée</h2><p>Chaque remise et chaque restitution s’accompagnent d’un état des lieux avec photos, kilométrage et carburant, conservé dans votre dossier.</p></div>
+        <div className="own"><h2>Mettez votre véhicule au travail</h2><p>Déposez votre candidature : YUM vérifie votre véhicule et vos documents, puis vous répond. Votre véhicule reste sous votre responsabilité, selon les conditions convenues avec YUM. Aucun revenu n’est garanti.</p><div className="cta-row"><Link className="btn navy" href="/devenir-partenaire">Devenir partenaire</Link><Link className="btn line" href="/proprietaires">Comment ça marche</Link></div></div>
+        <div className="own alt"><h2>Un dossier suivi</h2><p>Vérification, suivi de votre dossier, gestion des disponibilités : vous savez toujours où en est votre candidature depuis votre espace.</p></div>
       </div></section>
+
+      <Faq />
+
+      <section className="s"><div className="wrap"><div className="cta">
+        <div><h2>Prêt à prendre la route avec YUM ?</h2><p>Découvrez les véhicules ou faites une demande, l’équipe vous répond.</p></div>
+        <div className="cta-row" style={{ marginTop: 0 }}><Link className="btn gold" href="/vehicules">Découvrir les véhicules</Link><Link className="btn ghost" href="/demande-speciale">Faire une demande</Link></div>
+      </div></div></section>
     </>
   );
 }

@@ -3,7 +3,7 @@ import Wizard from "./Wizard";
 import { WhatsAppButton } from "../WhatsApp";
 import { WA_PARTNER } from "../../lib/config";
 
-export const metadata = { title: "Devenir partenaire — YUM" };
+export const metadata = { title: "Devenir partenaire — YUM", description: "Propriétaires : déposez votre candidature pour proposer votre véhicule à la location avec YUM. Aucun revenu n’est garanti.", alternates: { canonical: "/devenir-partenaire" } };
 
 export default function Page() {
   return (

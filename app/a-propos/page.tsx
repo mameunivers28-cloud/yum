@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Shell from "../Shell";
 
-export const metadata = { title: "À propos — YUM" };
+export const metadata = { title: "À propos — YUM", description: "YUM Afrique, plateforme de location de véhicules à Dakar : flotte YUM et propriétaires partenaires vérifiés.", alternates: { canonical: "/a-propos" } };
 
 export default function Page() {
   return (

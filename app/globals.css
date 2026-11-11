@@ -238,3 +238,34 @@ footer.site .logo{color:#fff}.pagehead .eyebrow{color:var(--acc)}
 .formcard input[type=file]{height:auto;padding:10px;background:#fff}
 .formcard input[type=checkbox]{height:20px}
 .adm-detail{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:10px;margin-top:6px}.adm-detail p{margin:0}
+
+/* refonte : sections accueil et pages marketing */
+.why{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.why li{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:6px;transition:transform .25s,box-shadow .25s}
+.why li:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+.why h3{font-size:19px;font-weight:800}.why p{margin:0;color:#5b6572;font-size:15.5px}
+.why .linkbtn{margin-top:auto;padding:8px 0 0;text-align:left;text-decoration:none}
+.demo{display:grid;gap:22px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:900px){.demo{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start}}
+.demo-dots{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.demo-dots button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;font:600 15px var(--font-main),sans-serif;color:var(--head);min-height:44px}
+.demo-dots span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--off);color:var(--navy);font-weight:800;flex:none}
+.demo-dots em{font-style:normal}
+.demo-dots .on{border-color:var(--gold);box-shadow:0 0 0 2px rgba(42,95,232,.15)}.demo-dots .on span,.demo-dots .done span{background:var(--navy);color:#fff}
+.demo-card{background:var(--navy);color:#e8edf3;border-radius:22px;padding:30px;display:grid;gap:12px;min-width:0}
+.demo-card h3{color:#fff;font-size:24px;font-weight:800}.demo-card p{margin:0}
+.demo-n{color:var(--acc);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.demo-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}.demo-bar i{display:block;height:100%;background:var(--acc);transition:width .35s}
+.demo-card .btn.line{color:#fff;border-color:rgba(255,255,255,.6)}.demo-card .btn.navy{background:var(--gold)}
+.demo-card .btn:disabled{opacity:.4;cursor:not-allowed}
+.faq{display:grid;gap:28px;margin-top:22px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.faq h3{font-size:18px;margin-bottom:10px;color:var(--gold)}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.faq summary{cursor:pointer;padding:14px 16px;font-weight:700;color:var(--head);list-style:none;position:relative;padding-right:40px;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:16px;top:12px;font-size:20px;color:var(--gold)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{margin:0;padding:0 16px 16px;color:#5b6572}
+.soc{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.owner-note{margin:0 0 10px;font-weight:600;color:var(--navy);background:var(--off);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:inline-block}
+.steps.mini{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px}.steps.mini li{padding:14px}.steps.mini b{font-size:15.5px}

@@ -3,7 +3,7 @@ import Shell from "../Shell";
 import Catalogue from "./Catalogue";
 import { getCars } from "../cars";
 
-export const metadata = { title: "Nos véhicules — YUM" };
+export const metadata = { title: "Nos véhicules — YUM", description: "Catalogue des véhicules de location à Dakar : filtrez par catégorie, transmission et prix. Flotte YUM et véhicules de partenaires vérifiés.", alternates: { canonical: "/vehicules" } };
 
 async function Liste() {
   return <Catalogue cars={await getCars()} />;

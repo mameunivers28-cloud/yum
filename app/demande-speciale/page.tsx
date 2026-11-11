@@ -3,7 +3,7 @@ import SpecialForm from "./SpecialForm";
 import { WhatsAppButton } from "../WhatsApp";
 
 
-export const metadata = { title: "Demande personnalisée — YUM" };
+export const metadata = { title: "Demande personnalisée — YUM", description: "Vous ne trouvez pas le véhicule recherché ? Faites une demande personnalisée, YUM cherche pour vous à Dakar.", alternates: { canonical: "/demande-speciale" } };
 
 export default function Page() {
   return (

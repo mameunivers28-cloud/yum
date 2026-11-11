@@ -3,7 +3,7 @@ import LeadForm from "../LeadForm";
 import { WhatsAppButton } from "../WhatsApp";
 import { WA_GENERAL } from "../../lib/config";
 
-export const metadata = { title: "Contact — YUM" };
+export const metadata = { title: "Contact — YUM", description: "Contactez YUM Afrique pour toute question sur la location de véhicules à Dakar.", alternates: { canonical: "/contact" } };
 
 export default function Page() {
   return (
