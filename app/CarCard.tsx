@@ -8,7 +8,7 @@ export default function CarCard({ c }: { c: Car }) {
     <article className="car">
       <div className="pic">
         <span className={c.o === "YUM" ? "tag" : "tag p"}>{c.o === "YUM" ? "Flotte YUM" : "Partenaire"}</span>
-        {c.img ? <img src={c.img} alt={c.n} loading="lazy" /> : <svg viewBox="0 0 120 50" aria-hidden="true"><use href="#car" /></svg>}
+        {c.img ? <img src={c.img} alt={c.n} loading="lazy" /> : <><svg viewBox="0 0 120 50" aria-hidden="true"><use href="#car" /></svg><small className="nophoto">Photo à venir</small></>}
       </div>
       <div className="body">
         <small className="brand">{c.m} {c.y ? `· ${c.y}` : ""}</small>

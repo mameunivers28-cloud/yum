@@ -9,7 +9,6 @@ import Pourquoi from "./sections/Pourquoi";
 import Parcours from "./sections/Parcours";
 import Perso from "./sections/Perso";
 import Choix from "./sections/Choix";
-import Services from "./sections/Services";
 import Dakar from "./sections/Dakar";
 import Faq from "./sections/Faq";
 
@@ -37,28 +36,34 @@ export default function Accueil({ cars }: { cars: Car[] }) {
 
   return (
     <>
-      <section className="hero" style={{ ["--hero" as string]: `url(${HERO})` }}>
-        <div className="wrap hero-in">
-          <p className="eyebrow">YUM Afrique · La mobilité, autrement</p>
-          <h1>Louez un véhicule. <em>Ou mettez le vôtre en location.</em></h1>
-          <p className="lead">YUM Afrique vous connecte à des véhicules proposés par notre flotte, des particuliers et des professionnels partenaires. Trouvez le véhicule qu’il vous faut ou proposez le vôtre, avec un accompagnement à chaque étape.</p>
-          <div className="intent">
-            <div className="icard">
-              <h2>Besoin d’un véhicule ?</h2>
-              <p>Explorez les véhicules disponibles à la demande, choisissez celui qui vous correspond et transmettez votre demande de location.</p>
-              <Link className="btn gold" href="/vehicules">Trouver un véhicule</Link>
+      <section className="hero hero2" style={{ ["--hero" as string]: `url(${HERO})` }}>
+        <div className="wrap hero2-in">
+          <div className="h2-copy">
+            <p className="eyebrow">YUM Afrique · La mobilité, autrement</p>
+            <h1>Louez un véhicule. <em>Ou mettez le vôtre en location.</em></h1>
+            <p className="lead">YUM Afrique vous connecte à des véhicules proposés par notre flotte, des particuliers et des professionnels partenaires. Trouvez le véhicule qu’il vous faut ou proposez le vôtre, avec un accompagnement à chaque étape.</p>
+            <div className="paths">
+              <Link href="/vehicules" className="path primary">
+                <span className="path-k">Besoin d’un véhicule ?</span>
+                <span className="path-t">Explorez les véhicules disponibles à la demande, choisissez celui qui vous correspond et transmettez votre demande de location.</span>
+                <span className="btn gold">Trouver un véhicule</span>
+              </Link>
+              <Link href="/proprietaires" className="path">
+                <span className="path-k">Vous possédez un véhicule ?</span>
+                <span className="path-t">Particulier ou professionnel, proposez votre véhicule à la location sur YUM Afrique. Notre équipe examine votre candidature avant toute publication.</span>
+                <span className="btn ghost">Mettre mon véhicule en location</span>
+              </Link>
             </div>
-            <div className="icard">
-              <h2>Vous possédez un véhicule ?</h2>
-              <p>Particulier ou professionnel, proposez votre véhicule à la location sur YUM Afrique. Notre équipe examine votre candidature avant toute publication.</p>
-              <Link className="btn navy" href="/proprietaires">Mettre mon véhicule en location</Link>
-            </div>
+            <p className="h2-perso"><b>Vous recherchez un véhicule précis ?</b> Décrivez votre besoin et laissez YUM rechercher une solution dans sa flotte et auprès de ses partenaires. <Link href="/demande-speciale">Faire une demande personnalisée →</Link></p>
+            <p className="h2-geo">Disponible au Sénégal, avec une ambition à l’échelle africaine.</p>
           </div>
-          <div className="perso-strip">
-            <div><b>Vous recherchez un véhicule précis ?</b><span>Décrivez votre besoin et laissez YUM rechercher une solution dans sa flotte et auprès de ses partenaires.</span></div>
-            <Link className="btn ghost" href="/demande-speciale">Faire une demande personnalisée</Link>
+          <div className="h2-visual" aria-hidden="true">
+            <svg className="h2-car" viewBox="0 0 120 50"><use href="#car" /></svg>
+            <div className="h2-photo" />
+            <ul className="h2-sources">
+              <li>La flotte YUM</li><li>Des particuliers partenaires</li><li>Des professionnels partenaires</li>
+            </ul>
           </div>
-          <p className="geo">Disponible au Sénégal, avec une ambition à l’échelle africaine.</p>
         </div>
       </section>
 
@@ -94,13 +99,17 @@ export default function Accueil({ cars }: { cars: Car[] }) {
       <Parcours />
       <Perso />
       <Pourquoi />
-      <Services />
 
       <Dakar />
 
       <Faq />
 
       <Choix />
+      <div className="mbar-space" />
+      <nav className="mbar" aria-label="Actions principales">
+        <Link className="btn gold" href="/vehicules">Trouver un véhicule</Link>
+        <Link className="btn line" href="/proprietaires">Proposer mon véhicule</Link>
+      </nav>
     </>
   );
 }

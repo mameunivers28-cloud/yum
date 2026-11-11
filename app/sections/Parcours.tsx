@@ -18,27 +18,25 @@ export const PROPOSER: [string, string][] = [
 ];
 
 export function Steps({ items }: { items: [string, string][] }) {
-  return <ol className="steps six">{items.map(([t, p]) => <li key={t}><b>{t}</b>{p}</li>)}</ol>;
+  return <ol className="tl">{items.map(([t, p]) => <li key={t}><b>{t}</b><span>{p}</span></li>)}</ol>;
 }
 
 export default function Parcours() {
   return (
-    <section className="s soft" id="fonctionnement"><div className="wrap">
-      <p className="eyebrow dark">Comment ça marche</p>
+    <section className="s band" id="fonctionnement"><div className="wrap">
+      <p className="eyebrow">Comment ça marche</p>
       <h2>Deux parcours, un accompagnement humain</h2>
-      <div className="duo">
-        <div>
-          <h3>Pour louer un véhicule</h3>
-          <Steps items={LOUER} />
-          <p className="notice">Une demande n’est pas une réservation confirmée.</p>
-          <div className="cta-row"><Link className="btn navy" href="/vehicules">Trouver un véhicule</Link></div>
-        </div>
-        <div>
-          <h3>Pour proposer un véhicule</h3>
-          <Steps items={PROPOSER} />
-          <p className="notice">Particulier ou professionnel. Aucun revenu n’est garanti.</p>
-          <div className="cta-row"><Link className="btn navy" href="/proprietaires">Mettre mon véhicule en location</Link></div>
-        </div>
+      <div className="tl-block">
+        <h3>Pour louer un véhicule</h3>
+        <Steps items={LOUER} />
+        <p className="tl-note">Une demande n’est pas une réservation confirmée.</p>
+        <Link className="btn gold" href="/vehicules">Trouver un véhicule</Link>
+      </div>
+      <div className="tl-block">
+        <h3>Pour proposer un véhicule</h3>
+        <Steps items={PROPOSER} />
+        <p className="tl-note">Particulier ou professionnel. Aucun revenu n’est garanti.</p>
+        <Link className="btn ghost" href="/proprietaires">Mettre mon véhicule en location</Link>
       </div>
     </div></section>
   );

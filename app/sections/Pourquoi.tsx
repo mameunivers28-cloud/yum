@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Ico from "../Ico";
 
 const ITEMS: [string, string, string][] = [
@@ -11,13 +12,22 @@ const ITEMS: [string, string, string][] = [
 
 export default function Pourquoi() {
   return (
-    <section className="s"><div className="wrap">
-      <p className="eyebrow dark">Confiance</p>
-      <h2>Pourquoi faire confiance à YUM ?</h2>
-      <p className="sub">Des engagements concrets, sans promesse que nous ne pourrions pas tenir.</p>
-      <ul className="why">
+    <section className="s"><div className="wrap trust2">
+      <div className="t2-head">
+        <p className="eyebrow dark">Confiance</p>
+        <h2>Pourquoi faire confiance à YUM ?</h2>
+        <p className="sub">Des engagements concrets, sans promesse que nous ne pourrions pas tenir.</p>
+        <p className="t2-for">Pour qui ?</p>
+        <div className="pills">
+          <Link href="/vehicules">Résidents</Link>
+          <Link href="/voyageurs-diaspora">Voyageurs et diaspora</Link>
+          <Link href="/familles-professionnels">Familles et professionnels</Link>
+          <Link href="/proprietaires">Propriétaires et agences</Link>
+        </div>
+      </div>
+      <ul className="t2-list">
         {ITEMS.map(([d, t, p]) => (
-          <li key={t}><Ico d={d} /><h3>{t}</h3><p>{p}</p></li>
+          <li key={t}><Ico d={d} /><div><h3>{t}</h3><p>{p}</p></div></li>
         ))}
       </ul>
     </div></section>
