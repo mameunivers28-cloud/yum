@@ -18,7 +18,7 @@ export default function Header() {
     <header className="site">
       <div className="wrap bar">
         <Link className="logo" href="/" aria-label="YUM Afrique, accueil" onClick={close}>
-          <svg aria-hidden="true"><use href="#mark" /></svg><span>YUM<small>AFRIQUE</small></span>
+          <svg aria-hidden="true"><use href="#mark" /></svg><span>YUM</span>
         </Link>
         <nav id="menu" className={open ? "open" : ""} aria-label="Navigation principale">
           {LINKS.map(([h, l]) => <Link key={h} href={h} onClick={close}>{l}</Link>)}

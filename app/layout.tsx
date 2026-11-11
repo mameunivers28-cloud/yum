@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "YUM — Location de véhicules à Dakar",
   description: "Louez un véhicule à Dakar : flotte YUM et propriétaires partenaires vérifiés.",
 };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#10243A" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#0F2A6B" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
