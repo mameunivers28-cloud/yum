@@ -55,7 +55,6 @@ export default function Accueil({ cars }: { cars: Car[] }) {
               </Link>
             </div>
             <p className="h2-perso"><b>Vous recherchez un véhicule précis ?</b> Décrivez votre besoin et laissez YUM rechercher une solution dans sa flotte et auprès de ses partenaires. <Link href="/demande-speciale">Faire une demande personnalisée →</Link></p>
-            <p className="h2-geo">Disponible au Sénégal, avec une ambition à l’échelle africaine.</p>
           </div>
           <div className="h2-visual" aria-hidden="true">
             <svg className="h2-car" viewBox="0 0 120 50"><use href="#car" /></svg>
