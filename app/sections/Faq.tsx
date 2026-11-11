@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FAQ } from "./faqData";
 
 export default function Faq() {
@@ -15,6 +16,7 @@ export default function Faq() {
           </div>
         ))}
       </div>
+      <p className="faqlinks">Pour le détail : <Link href="/annulation">annulation</Link> · <Link href="/remboursement">remboursement</Link> · <Link href="/depot-de-garantie">dépôt de garantie</Link> · <Link href="/confidentialite">confidentialité</Link></p>
     </div></section>
   );
 }

@@ -6,6 +6,14 @@ export const FAQ: FaqGroup[] = [
     { q: "La réservation est-elle instantanée ?", a: "Non. Chaque demande est vérifiée par une personne de l’équipe YUM. Votre réservation n’est confirmée qu’après validation de votre dossier et du paiement." },
     { q: "Comment confirmer ma demande ?", a: "Une fois votre dossier approuvé, YUM vous communique les conditions finales. La réservation est confirmée après validation du paiement." },
   ] },
+  { cat: "Disponibilités", items: [
+    { q: "Comment savoir si un véhicule est disponible ?", a: "Les dates déjà prises sont indiquées sur la fiche du véhicule. La disponibilité définitive est confirmée par YUM après l’envoi de votre demande." },
+    { q: "Que se passe-t-il si mes dates ne sont pas libres ?", a: "Le formulaire vous prévient et aucune demande n’est envoyée. Vous pouvez choisir d’autres dates ou demander une alternative à YUM." },
+  ] },
+  { cat: "Documents", items: [
+    { q: "Quels documents dois-je fournir ?", a: "Une pièce d’identité et un permis de conduire valide. YUM vous indique comment les transmettre lorsque votre dossier est examiné." },
+    { q: "Mes documents sont-ils protégés ?", a: "La manière dont YUM traite vos informations est décrite dans la politique de confidentialité. Les documents des propriétaires partenaires sont conservés de façon privée." },
+  ] },
   { cat: "Paiement", items: [
     { q: "Comment fonctionne le paiement ?", a: "Vous ne payez qu’après l’approbation de votre dossier. Les modalités de paiement vous sont communiquées par YUM avant toute confirmation." },
     { q: "Comment fonctionne le dépôt de garantie ?", a: "Le dépôt de garantie est distinct du prix de la location. Son montant et ses modalités vous sont communiqués par YUM avant confirmation. Voir aussi la page « Dépôt de garantie »." },
@@ -15,6 +23,9 @@ export const FAQ: FaqGroup[] = [
     { q: "Les véhicules sont-ils vérifiés ?", a: "Les véhicules de propriétaires partenaires sont examinés par YUM avant d’être publiés." },
     { q: "Comment connaître les disponibilités ?", a: "Les dates déjà réservées sont indiquées sur la fiche du véhicule. La disponibilité définitive est toujours confirmée par l’équipe YUM." },
     { q: "Puis-je demander un véhicule particulier ?", a: "Oui. Utilisez la demande personnalisée : YUM cherche dans sa flotte et auprès de ses partenaires." },
+  ] },
+  { cat: "Annulation", items: [
+    { q: "Puis-je annuler ma demande ?", a: "Les conditions d’annulation figurent dans la politique d’annulation de YUM. En cas de doute, écrivez à l’équipe avant de confirmer." },
   ] },
   { cat: "Livraison", items: [
     { q: "Puis-je récupérer mon véhicule à l’aéroport ?", a: "Vous pouvez demander une remise à l’aéroport dans votre demande. Elle est confirmée par YUM selon les possibilités." },

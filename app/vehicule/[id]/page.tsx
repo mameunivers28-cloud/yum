@@ -41,6 +41,7 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
   const { data: av } = await supabase.from("vehicle_availability").select("start_date,end_date").eq("vehicle_id", id).order("start_date");
   const photos = (v.photos && v.photos.length ? v.photos : v.photo_url ? [v.photo_url] : []);
   const url = `${SITE_URL}/vehicule/${v.id}`;
+  const waDispo = `Bonjour YUM Afrique, je souhaite savoir si le véhicule suivant est disponible pour mes dates :\n\nVéhicule : ${v.name}${v.year ? " " + v.year : ""}\nLien : ${url}\n\nMes dates : ...`;
   const wa = `Bonjour YUM Afrique, je souhaite obtenir des informations sur le véhicule suivant :\n\nVéhicule : ${v.name}\nAnnée : ${v.year ?? "non précisée"}\nPrix journalier : ${fmt(v.daily_price)} FCFA\nLien : ${url}\n\nJe souhaite connaître sa disponibilité et les conditions de location.`;
   const conds: [string, string | null][] = [
     ["Conditions de location", v.rental_conditions], ["Kilométrage", v.mileage_policy], ["Carburant", v.fuel_policy],
@@ -86,6 +87,7 @@ async function Detail({ params }: { params: Promise<{ id: string }> }) {
           <div className="cta-row">
             <a className="btn gold" href="#demande">Demander ce véhicule</a>
             <WhatsAppButton message={wa} />
+            <WhatsAppButton message={waDispo} label="Vérifier la disponibilité" className="btn line" />
             <Link className="btn line" href="/vehicules">Découvrir les autres véhicules</Link>
           </div>
         </div>

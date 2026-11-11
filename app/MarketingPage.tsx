@@ -31,7 +31,7 @@ export default function MarketingPage({ m }: { m: Mk }) {
       {m.steps && (
         <section className="s soft"><div className="wrap">
           <h2>Comment ça se passe</h2>
-          <ol className="steps">{m.steps.map(([t, p]) => <li key={t}><b>{t}</b>{p}</li>)}</ol>
+          <ol className={`steps${m.steps.length === 4 ? " q" : ""}`}>{m.steps.map(([t, p]) => <li key={t}><b>{t}</b>{p}</li>)}</ol>
           {m.note && <p className="notice" style={{ marginTop: 22 }}>{m.note}</p>}
         </div></section>
       )}

@@ -99,6 +99,18 @@ export default function DemandeForm({ vehicleId, vehicleName, year, dailyPrice, 
       {(f.ret.startsWith("Mon ") || f.ret.startsWith("Autre")) && <label>Précisez le lieu<input value={f.ret_detail} onChange={set("ret_detail")} /></label>}
       <small style={{ color: "#5b6572" }}>La livraison et la récupération sont à confirmer par YUM selon le véhicule et la zone.</small>
       <label>Informations complémentaires <small>(facultatif)</small><textarea rows={3} value={f.notes} onChange={set("notes")} /></label>
+      <div className="recap" aria-live="polite">
+        <b>Récapitulatif de votre demande</b>
+        <ul>
+          <li>Véhicule : {vehicleName}{year ? " " + year : ""}</li>
+          <li>Départ : {f.start_date ? `${f.start_date} à ${f.start_time}` : "à renseigner"}</li>
+          <li>Retour : {f.end_date ? `${f.end_date} à ${f.end_time}` : "à renseigner"}</li>
+          <li>Récupération : {place(f.pickup, f.pickup_detail)}</li>
+          <li>Restitution : {place(f.ret, f.ret_detail)}</li>
+          <li>Contact : {f.phone || f.email ? [f.phone, f.email].filter(Boolean).join(" · ") : "à renseigner"}</li>
+        </ul>
+        <small>Cette demande sera examinée par YUM. Elle n’est pas une réservation confirmée.</small>
+      </div>
       {err && <p className="err" role="alert">{err}</p>}
       <button className="btn gold" type="submit" disabled={state === "sending"}>{state === "sending" ? "Envoi…" : "Envoyer ma demande"}</button>
     </form>

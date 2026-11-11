@@ -1,7 +1,7 @@
 import Shell from "../Shell";
 import LeadForm from "../LeadForm";
 import { WhatsAppButton } from "../WhatsApp";
-import { WA_GENERAL } from "../../lib/config";
+import { WA_GENERAL, WA_SUPPORT } from "../../lib/config";
 
 export const metadata = { title: "Contact — YUM", description: "Contactez YUM Afrique pour toute question sur la location de véhicules à Dakar.", alternates: { canonical: "/contact" } };
 
@@ -14,7 +14,7 @@ export default function Page() {
         <p className="lead">Une question avant de réserver ? Écrivez-nous, nous vous répondons.</p>
       </div></section>
       <section className="s"><div className="wrap" style={{ maxWidth: 720 }}>
-        <p><WhatsAppButton message={WA_GENERAL} label="Nous écrire sur WhatsApp" /></p>
+        <p><WhatsAppButton message={WA_GENERAL} label="Nous écrire sur WhatsApp" /> <WhatsAppButton message={WA_SUPPORT} label="Assistance sur ma demande" className="btn line" /></p>
         <LeadForm table="contact_messages" submit="Envoyer le message" okTitle="Message envoyé" okText="Merci. Nous vous répondons dès que possible."
           fields={[
             { k: "full_name", label: "Nom complet", required: true, half: true },

@@ -7,7 +7,7 @@ const SERVICES: [string, string, string, string, string][] = [
   ["M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-5-5", "Recherche personnalisée", "Décrivez le véhicule souhaité, nous le cherchons pour vous.", "/demande-speciale", "Faire une demande"],
   ["M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z", "Remise du véhicule", "Aéroport ou adresse à Dakar : à préciser dans votre demande, selon les possibilités.", "/contact", "Poser la question"],
   ["M16 11a4 4 0 10-8 0M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6", "Accompagnement", "Une équipe qui répond à vos questions avant et pendant la location.", "/contact", "Contacter YUM"],
-  ["M4 7h16v12H4zM9 7V5h6v2", "Professionnels", "Déplacements professionnels : catégories de véhicules et demande sur mesure.", "/professionnels", "En savoir plus"],
+  ["M4 7h16v12H4zM9 7V5h6v2", "Familles et professionnels", "Déplacements familiaux ou professionnels : catégories de véhicules et demande sur mesure.", "/familles-professionnels", "En savoir plus"],
 ];
 
 export default function Services() {

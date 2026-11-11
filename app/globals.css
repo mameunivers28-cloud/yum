@@ -269,3 +269,12 @@ footer.site .logo{color:#fff}.pagehead .eyebrow{color:var(--acc)}
 .soc{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 .owner-note{margin:0 0 10px;font-weight:600;color:var(--navy);background:var(--off);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:inline-block}
 .steps.mini{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px}.steps.mini li{padding:14px}.steps.mini b{font-size:15.5px}
+.steps.q{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:1000px){.steps.q{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:420px){.steps.q{grid-template-columns:minmax(0,1fr)}}
+.hyb{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.hyb li{background:var(--off);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.hyb b{color:var(--head);font-size:17px}.hyb p{margin:4px 0 0;color:#5b6572;font-size:15.5px}
+.recap{background:var(--off);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--ink)}
+.recap b{color:var(--head)}.recap ul{margin:8px 0;padding-left:18px}.recap small{color:#5b6572}
+.faqlinks{margin-top:22px;color:#5b6572}.faqlinks a{color:var(--navy);font-weight:600}
