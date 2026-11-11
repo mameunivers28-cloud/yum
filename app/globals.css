@@ -56,3 +56,29 @@ footer.site .wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-bet
 footer.site a{display:block;opacity:.85;text-decoration:none;margin-top:4px}footer.site .logo{color:#fff;opacity:1}
 @media(max-width:640px){nav{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- Page de détail et formulaires ---- */
+.back{margin:0 0 14px;font-weight:600}.back a{text-decoration:none;color:var(--blue)}
+.detail{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:860px){.detail{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start}}
+.pic.big{height:260px;border-radius:16px;margin-bottom:18px}.pic.big svg{width:200px}
+@media(min-width:860px){.pic.big{height:340px}}
+.dt{font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--indigo)}
+.specs{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.specs li{background:var(--soft);border-radius:10px;padding:10px 14px}.specs b{display:block;font-size:13px;opacity:.7;font-weight:600}
+.equip{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:10px 0 0}
+.equip li{border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;font-size:15px}
+.formcard{background:var(--card);border:1.5px solid var(--blue);border-radius:16px;padding:22px;display:grid;gap:14px;min-width:0}
+.formcard.ok{border-color:#1f9d55;background:#f2fbf6}
+.formcard h2{font-size:24px;margin:0}
+.formcard label{display:grid;gap:4px;font-size:14px;font-weight:600;min-width:0}
+.formcard label small{font-weight:400;opacity:.7}
+.formcard input,.formcard select,.formcard textarea{font:400 16px var(--font-body),sans-serif;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;min-width:0;max-width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;text-align:left}
+.formcard input,.formcard select{height:46px}
+.formcard select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230F2A6B' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.formcard input[type=date]::-webkit-date-and-time-value{text-align:left;min-height:1.2em}
+.fgrid{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:420px){.fgrid{grid-template-columns:minmax(0,1fr)}}
+.est{margin:0;background:var(--soft);border-radius:10px;padding:10px 14px}
+.err{margin:0;color:#b3261e;font-weight:600}
+.formcard .btn:disabled{opacity:.6;cursor:wait}

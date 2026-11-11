@@ -1,5 +1,6 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 
 export type Car = { id: string; n: string; y: number; c: string; t: string; s: number; p: number; o: "YUM" | "Partenaire"; img: string };
 
@@ -87,7 +88,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
                   <h3>{c.n}</h3>
                   <small>{c.y}, {c.c}, {c.t}, {c.s} places</small>
                   <div className="price">{fmt(c.p)} FCFA <small>par jour</small></div>
-                  <a className="btn line" style={{ marginTop: 10 }} href="#vehicule">Voir le détail</a>
+                  <Link className="btn line" style={{ marginTop: 10 }} href={`/vehicule/${c.id}`}>Voir le détail</Link>
                 </div>
               </article>
             ))}
@@ -108,7 +109,7 @@ export default function Accueil({ cars }: { cars: Car[] }) {
 
         <section className="s"><div className="wrap"><div className="cta">
           <div><h2>Vous ne trouvez pas votre voiture ?</h2><p>Faites une demande spéciale. Nous cherchons dans notre flotte et auprès de nos partenaires, puis nous vous proposons des offres.</p></div>
-          <a className="btn w" href="#demande-speciale">Faire une demande spéciale</a>
+          <Link className="btn w" href="/demande-speciale">Faire une demande spéciale</Link>
         </div></div></section>
 
         <section className="s" id="proprietaire" style={{ paddingTop: 0 }}><div className="wrap two">
