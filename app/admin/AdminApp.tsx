@@ -84,6 +84,7 @@ export default function AdminApp() {
   const [today, setToday] = useState("");
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [apps, setApps] = useState<PApp[]>([]);
+  const [sure, setSure] = useState<string | null>(null);
   const [padm, setPadm] = useState<Record<string, PAdm>>({});
   const [open, setOpen] = useState<string | null>(null);
   const [msg, setMsg] = useState("");
@@ -192,6 +193,27 @@ export default function AdminApp() {
   }
 
   const isMgr = role === "Administrateur principal" || role === "Gestionnaire";
+  const isMain = role === "Administrateur principal";
+
+  async function delApp(a: PApp) {
+    const { data, error } = await supabase.from("partner_applications").delete().eq("id", a.id).select("id");
+    setSure(null);
+    if (error || !data || data.length === 0) { setMsg("Suppression refusée : réservée à l’Administrateur principal, et impossible si le dossier est déjà lié à un véhicule."); return; }
+    setMsg("");
+    const paths = (a.documents ?? []).map((d) => d.path);
+    if (paths.length) await supabase.storage.from("partner-docs").remove(paths);
+    setApps((l) => l.filter((x) => x.id !== a.id));
+    refreshHist();
+  }
+
+  async function delSpecial(id: string) {
+    const { data, error } = await supabase.from("special_requests").delete().eq("id", id).select("id");
+    setSure(null);
+    if (error || !data || data.length === 0) { setMsg("Suppression refusée : réservée à l’Administrateur principal."); return; }
+    setMsg("");
+    setSpecials((l) => l.filter((x) => x.id !== id));
+    refreshHist();
+  }
 
   async function saveRadm(rid: string, f: FormData) {
     const n = (k: string) => (f.get(k) ? Number(f.get(k)) : null);
@@ -419,6 +441,9 @@ export default function AdminApp() {
               <select value={r.status} onChange={(e) => setStatus("special_requests", r.id, e.target.value)} aria-label="Statut">
                 {[...new Set([r.status, ...SSTAT])].map((s) => <option key={s}>{s}</option>)}
               </select>
+              {isMain && (sure === r.id
+                ? <p className="adm-sure">Supprimer définitivement cette demande ? <button className="linkbtn danger" onClick={() => delSpecial(r.id)}>Oui, supprimer</button> <button className="linkbtn" onClick={() => setSure(null)}>Annuler</button></p>
+                : <button className="linkbtn danger" onClick={() => setSure(r.id)}>Supprimer</button>)}
             </article>
           ))}
         </div>
@@ -437,6 +462,9 @@ export default function AdminApp() {
                   {[...new Set([a.status, ...PSTAT])].map((x) => <option key={x}>{x}</option>)}
                 </select>
                 <button className="linkbtn" onClick={() => setOpen(open === a.id ? null : a.id)}>{open === a.id ? "Masquer le détail" : "Voir le détail"}</button>
+                {isMain && !a.vehicle_id && (sure === a.id
+                  ? <p className="adm-sure">Supprimer définitivement ce dossier et ses documents ? <button className="linkbtn danger" onClick={() => delApp(a)}>Oui, supprimer</button> <button className="linkbtn" onClick={() => setSure(null)}>Annuler</button></p>
+                  : <button className="linkbtn danger" onClick={() => setSure(a.id)}>Supprimer</button>)}
                 {open === a.id && (
                   <div className="adm-detail">
                     <p>{[a.category, a.transmission, a.fuel, a.engine, a.seats ? `${a.seats} places` : null, a.has_ac === null ? null : a.has_ac ? "climatisé" : "sans clim", a.mileage_km ? `${a.mileage_km.toLocaleString("fr-FR")} km` : null].filter(Boolean).join(" · ")}</p>

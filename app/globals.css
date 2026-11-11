@@ -327,3 +327,4 @@ footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:t
 @media(min-width:900px){header.site nav{gap:16px;font-size:13.5px}}
 .duo h3{font-size:22px;color:var(--head);font-weight:800}
 @media(min-width:900px){.why.svc{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.linkbtn.danger{color:#b42318}.adm-sure{margin:8px 0;padding:10px 12px;border:1px solid #f1b5ae;background:#fff4f2;border-radius:10px;font-weight:600}
