@@ -300,3 +300,5 @@ header.site nav a:not(.btn):hover::after{transform:scaleX(1)}
 .hyb li{transition:transform .25s,box-shadow .25s}.hyb li:hover{transform:translateY(-2px);box-shadow:var(--sh)}
 footer.site a{transition:color .2s,transform .2s}footer.site a:hover{transform:translateX(2px)}
 @media(prefers-reduced-motion:reduce){.btn:active,.steps li:hover,.own:hover,.hyb li:hover,footer.site a:hover{transform:none}}
+.adm-filter input{height:44px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;background:var(--off);font:inherit;color:var(--ink);width:100%}
+.own h3{font-size:20px;font-weight:800;color:var(--head)}
