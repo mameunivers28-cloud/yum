@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabase";
 
 export default function AuthForm() {
   const router = useRouter();
+  const nextUrl = () => { try { const n = new URLSearchParams(window.location.search).get("next"); return n && n.startsWith("/") && !n.startsWith("//") ? n : "/mon-espace"; } catch { return "/mon-espace"; } };
   const [mode, setMode] = useState<"in" | "up">("in");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -19,14 +20,14 @@ export default function AuthForm() {
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: pw });
       setBusy(false);
       if (error) { setErr("Courriel ou mot de passe incorrect."); return; }
-      router.push("/mon-espace");
+      router.push(nextUrl());
       return;
     }
     if (pw.length < 8) { setBusy(false); setErr("Le mot de passe doit contenir au moins 8 caractères."); return; }
-    const { data, error } = await supabase.auth.signUp({ email: email.trim(), password: pw, options: { emailRedirectTo: window.location.origin + "/mon-espace" } });
+    const { data, error } = await supabase.auth.signUp({ email: email.trim(), password: pw, options: { emailRedirectTo: window.location.origin + nextUrl() } });
     setBusy(false);
     if (error) { setErr("Création impossible. Vérifiez votre courriel ou essayez de vous connecter."); return; }
-    if (data.session) { router.push("/mon-espace"); return; }
+    if (data.session) { router.push(nextUrl()); return; }
     setMsg("Compte créé. Un courriel de confirmation vient de vous être envoyé : cliquez sur le lien, puis connectez-vous.");
   }
 

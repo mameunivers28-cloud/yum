@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabase";
 type Rental = { id: string; vehicle_id: string | null; start_date: string; end_date: string; pickup_place: string | null; status: string | null; created_at: string };
 type Special = { id: string; start_date: string; end_date: string; vehicle_type: string | null; make: string | null; model: string | null; status: string | null; created_at: string };
 
+type App = { id: string; vehicle_make: string; vehicle_model: string; status: string; created_at: string };
 const fmt = (d: string) => new Date(d + "T00:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
 
 export default function Espace() {
@@ -13,6 +14,7 @@ export default function Espace() {
   const [email, setEmail] = useState("");
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [specials, setSpecials] = useState<Special[]>([]);
+  const [apps, setApps] = useState<App[]>([]);
   const [names, setNames] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -24,6 +26,8 @@ export default function Espace() {
         supabase.from("rental_requests").select("id,vehicle_id,start_date,end_date,pickup_place,status,created_at").eq("user_id", u.id).order("created_at", { ascending: false }),
         supabase.from("special_requests").select("id,start_date,end_date,vehicle_type,make,model,status,created_at").eq("user_id", u.id).order("created_at", { ascending: false }),
       ]);
+      const { data: pa } = await supabase.from("partner_applications").select("id,vehicle_make,vehicle_model,status,created_at").eq("user_id", u.id).order("created_at", { ascending: false });
+      setApps((pa ?? []) as App[]);
       const rl = (r.data ?? []) as Rental[];
       setRentals(rl); setSpecials((s.data ?? []) as Special[]);
       const ids = Array.from(new Set(rl.map((x) => x.vehicle_id).filter(Boolean))) as string[];
@@ -64,6 +68,17 @@ export default function Espace() {
           </div>
         ))}
       </div>
+      {apps.length > 0 && <>
+        <h2 style={{ fontSize: 24, marginTop: 32 }}>Mes dossiers partenaire</h2>
+        <div className="adm-list">
+          {apps.map((x) => (
+            <div className="adm-card" key={x.id}>
+              <div className="adm-head"><b>{x.vehicle_make} {x.vehicle_model}</b><span className="tag" style={{ position: "static" }}>{x.status}</span></div>
+              <p>Dossier n° {x.id.slice(0, 8).toUpperCase()}</p>
+            </div>
+          ))}
+        </div>
+      </>}
       <p className="notice" style={{ marginTop: 28 }}>Seules les demandes envoyées pendant que vous étiez connecté apparaissent ici.</p>
     </>
   );
